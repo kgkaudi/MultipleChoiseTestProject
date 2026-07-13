@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import "../styles/ResultsPage.css"
+import "../styles/ResultsPage.css";
 
 export default function ResultsPage() {
   const { state } = useLocation();
@@ -14,18 +14,24 @@ export default function ResultsPage() {
     <div className="results-container">
       <h2 className="results-title">Quiz Results</h2>
 
-      <p className="results-score">
-        Your Score: <span>{score}</span> / {questions.length}
-      </p>
+      <div className="results-summary">
+        <p className="results-score">
+          Score: <span>{score}</span> / {questions.length}
+        </p>
 
-      <p className="results-percentage">
-        Percentage: <span>{percentage}%</span>
-      </p>
+        <p className="results-percentage">
+          Percentage: <span>{percentage}%</span>
+        </p>
+      </div>
 
       <div className="results-list">
         {questions.map((q, i) => {
           const userAnswerIndex = userAnswers[i];
-          const userAnswer = q.answers[userAnswerIndex];
+          const userAnswer =
+            userAnswerIndex !== undefined
+              ? q.answers[userAnswerIndex]
+              : "No answer selected";
+
           const correctAnswer = q.answers[q.correctIndex];
           const isCorrect = userAnswerIndex === q.correctIndex;
 
@@ -38,7 +44,11 @@ export default function ResultsPage() {
 
               <p className="result-answer">
                 <strong>Your answer:</strong>{" "}
-                <span className={isCorrect ? "answer-correct" : "answer-wrong"}>
+                <span
+                  className={
+                    isCorrect ? "answer-correct" : "answer-wrong"
+                  }
+                >
                   {userAnswer}
                 </span>
               </p>

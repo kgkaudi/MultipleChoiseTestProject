@@ -1,3 +1,6 @@
+/* ===========================
+   Quiz Container
+   =========================== */
 .quiz-container {
   display: flex;
   flex-direction: column;
@@ -8,18 +11,29 @@
   color: #ffd700;
   padding: 40px 20px;
   border-radius: 10px;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
   transition: all 0.3s ease;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
+/* ===========================
+   Question Title
+   =========================== */
 .quiz-container h2 {
   font-size: 1.8rem;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   text-align: center;
   color: #fff;
   letter-spacing: 0.5px;
+  border-bottom: 2px solid #ffd700;
+  padding-bottom: 10px;
+  width: fit-content;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
+/* ===========================
+   Answer Buttons
+   =========================== */
 .quiz-container button {
   background: transparent;
   border: 2px solid #ffd700;
@@ -32,6 +46,7 @@
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+  animation: fadeIn 0.4s ease-in-out;
 }
 
 .quiz-container button:hover {
@@ -45,6 +60,23 @@
   transform: scale(0.97);
 }
 
+/* ===========================
+   Fade-in Animation
+   =========================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================
+   Responsive Layout
+   =========================== */
 @media (max-width: 768px) {
   .quiz-container h2 {
     font-size: 1.4rem;

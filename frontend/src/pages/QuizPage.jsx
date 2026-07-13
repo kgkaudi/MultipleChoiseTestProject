@@ -22,13 +22,21 @@ export default function Quiz() {
   const q = questions[index];
 
   const handleAnswer = (i) => {
-    setUserAnswers([...userAnswers, i]); // track user choice
-    if (i === q.correctIndex) setScore(score + 1);
-    if (index + 1 < questions.length) setIndex(index + 1);
-    else finishQuiz();
+  const updatedAnswers = [...userAnswers];
+  updatedAnswers[index] = i;
+
+  setUserAnswers(updatedAnswers);
+
+  if (i === q.correctIndex) setScore(score + 1);
+
+  if (index + 1 < questions.length) {
+      setIndex(index + 1);
+    } else {
+      finishQuiz(updatedAnswers);
+    }
   };
 
-  const finishQuiz = async () => {
+  const finishQuiz = async (finalAnswers = userAnswers) => {
     if (!user) {
       console.error("User not logged in");
       return;
@@ -36,9 +44,8 @@ export default function Quiz() {
 
     await api.put(`/users/${user._id}/score`, { lastScore: score });
 
-    // navigate to results page with quiz data
     navigate("/results", {
-      state: { questions, userAnswers, score },
+      state: { questions, userAnswers: finalAnswers, score },
     });
   };
 
