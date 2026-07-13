@@ -25,16 +25,6 @@ export default function Dashboard() {
               Last Score: {lastScore} ({percentage}%)
             </p>
 
-            {user.canTakeQuiz ? (
-              <Link to="/quiz" className="dashboard-btn gold fade-in delay-3">
-                Start Quiz
-              </Link>
-            ) : (
-              <p className="dashboard-text fade-in delay-3 low">
-                You cannot take the quiz again until an admin enables it.
-              </p>
-            )}
-
             {/* Admin-only section */}
             {user.role === "admin" && (
               <div className="admin-section fade-in delay-4">
