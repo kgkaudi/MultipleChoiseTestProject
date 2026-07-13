@@ -1,16 +1,114 @@
-# React + Vite
+# 📘 **FRONTEND README.md (`frontend/README.md`)**
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+```md
+# Frontend – Multiple Choice Quiz (React + Vite)
 
-Currently, two official plugins are available:
+This is the frontend for the Multiple Choice Quiz platform.  
+Built with **React**, **Vite**, **Context API**, and custom animations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📁 Folder Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+frontend/
+  src/
+    pages/
+    components/
+    context/
+    api/
+    styles/
+```
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## 🎨 UI Features
+
+- Animated dashboard
+- Admin dashboard
+- Manage users
+- Manage questions
+- Gold popup notifications
+- Responsive layout
+- Slide-in animations
+
+---
+
+## 🔌 API Integration
+
+All API calls are handled through:
+
+```
+src/api/api.js
+```
+
+Uses Axios with:
+- Base URL
+- Token injection
+- Error handling
+
+---
+
+## 🔐 Authentication
+
+Stored in:
+```
+src/context/AuthContext.jsx
+```
+
+Features:
+- Login
+- Register
+- Auto-logout on token expiration
+- User role support
+
+---
+
+## 🧪 Pages
+
+### User Pages
+- Dashboard
+- Quiz
+- Login
+- Register
+
+### Admin Pages
+- Admin Dashboard
+- Manage Users
+- Manage Questions
+
+---
+
+## ▶️ Running the Frontend
+
+### Install dependencies
+```
+npm install
+```
+
+### Start dev server
+```
+npm run dev
+```
+
+### Environment variables
+Create `.env`:
+
+```
+VITE_API_URL=http://localhost:5000/api
+```
+
+---
+
+## 📦 Build for production
+
+```
+npm run build
+```
+
+---
+
+## 📄 License
+
+MIT License
+```
