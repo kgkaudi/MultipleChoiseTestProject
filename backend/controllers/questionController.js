@@ -1,29 +1,35 @@
-const Question = require("../models/Question");
+const questionService = require("../services/questionService");
 
-// CREATE QUESTION
+/* ===========================
+   CREATE QUESTION
+=========================== */
 exports.createQuestion = async (req, res) => {
   try {
-    const question = await Question.create(req.body);
+    const question = await questionService.createQuestion(req.body);
     res.json(question);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// READ ALL QUESTIONS
+/* ===========================
+   READ ALL QUESTIONS
+=========================== */
 exports.getQuestions = async (req, res) => {
   try {
-    const questions = await Question.find();
+    const questions = await questionService.getQuestions();
     res.json(questions);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// READ SINGLE QUESTION
+/* ===========================
+   READ SINGLE QUESTION
+=========================== */
 exports.getQuestionById = async (req, res) => {
   try {
-    const question = await Question.findById(req.params.id);
+    const question = await questionService.getQuestionById(req.params.id);
     if (!question) return res.status(404).json({ error: "Question not found" });
     res.json(question);
   } catch (err) {
@@ -31,13 +37,14 @@ exports.getQuestionById = async (req, res) => {
   }
 };
 
-// UPDATE QUESTION
+/* ===========================
+   UPDATE QUESTION
+=========================== */
 exports.updateQuestion = async (req, res) => {
   try {
-    const question = await Question.findByIdAndUpdate(
+    const question = await questionService.updateQuestion(
       req.params.id,
       req.body,
-      { new: true }
     );
     res.json(question);
   } catch (err) {
@@ -45,10 +52,12 @@ exports.updateQuestion = async (req, res) => {
   }
 };
 
-// DELETE QUESTION
+/* ===========================
+   DELETE QUESTION
+=========================== */
 exports.deleteQuestion = async (req, res) => {
   try {
-    const question = await Question.findByIdAndDelete(req.params.id);
+    const question = await questionService.deleteQuestion(req.params.id);
     if (!question) return res.status(404).json({ error: "Question not found" });
     res.json({ message: "Question deleted" });
   } catch (err) {

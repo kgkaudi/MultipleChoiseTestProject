@@ -1,29 +1,35 @@
-const User = require("../models/User");
+const userService = require("../services/userService");
 
-// CREATE USER
+/* ===========================
+   CREATE USER
+=========================== */
 exports.createUser = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    const user = await userService.createUser(req.body);
     res.json(user);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// READ ALL USERS
+/* ===========================
+   READ ALL USERS
+=========================== */
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await userService.getUsers();
     res.json(users);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// READ SINGLE USER
+/* ===========================
+   READ SINGLE USER
+=========================== */
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await userService.getUserById(req.params.id);
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
   } catch (err) {
@@ -31,60 +37,89 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// UPDATE USER (general fields)
+/* ===========================
+   UPDATE USER
+=========================== */
 exports.updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const user = await userService.updateUser(req.params.id, req.body);
     res.json(user);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// UPDATE SCORE
+/* ===========================
+   UPDATE SCORE
+=========================== */
 exports.updateScore = async (req, res) => {
   try {
-    const { lastScore } = req.body;
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    // Update score, completion date, and lock quiz access
-    user.lastScore = lastScore;
-    user.dateCompleted = new Date();
-    user.canTakeQuiz = false;
-
-    await user.save();
+    const user = await userService.updateScore(
+      req.params.id,
+      req.body.lastScore,
+    );
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     res.json({
       success: true,
       message: "Score updated and quiz access locked.",
-      user: {
-        id: user._id,
-        lastScore: user.lastScore,
-        dateCompleted: user.dateCompleted,
-        canTakeQuiz: user.canTakeQuiz
-      }
+      user,
     });
   } catch (err) {
-    console.error("Error updating score:", err);
     res.status(500).json({ error: "Failed to update score" });
   }
 };
 
-// DELETE USER
+/* ===========================
+   DELETE USER
+=========================== */
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await userService.deleteUser(req.params.id);
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json({ message: "User deleted" });
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+/* ===========================
+   ADMIN: Set quiz size for all users
+=========================== */
+exports.setQuizSizeForAll = async (req, res) => {
+  try {
+    const { quizSize } = req.body;
+
+    if (!quizSize || isNaN(quizSize)) {
+      return res.status(400).json({ message: "Invalid quiz size" });
+    }
+
+    await userService.setQuizSizeForAll(quizSize);
+
+    res.json({ message: `Quiz size set to ${quizSize} for all users.` });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+/* ===========================
+   ADMIN: Toggle quiz access
+=========================== */
+exports.toggleQuizAccess = async (req, res) => {
+  try {
+    const user = await userService.toggleQuizAccess(
+      req.params.id,
+      req.body.canTakeQuiz,
+    );
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json({
+      success: true,
+      userId: user._id,
+      canTakeQuiz: user.canTakeQuiz,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update quiz access" });
   }
 };
