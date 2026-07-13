@@ -3,13 +3,19 @@
 =========================== */
 .navbar {
   width: 100%;
-  padding: 15px 5px;
+  padding: 15px 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #111;
   border-bottom: 2px solid #d4af37;
   position: relative;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 5px;    
+  }
 }
 
 .navbar-logo {

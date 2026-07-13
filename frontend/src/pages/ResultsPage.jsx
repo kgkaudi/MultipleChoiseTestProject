@@ -8,12 +8,18 @@ export default function ResultsPage() {
   if (!questions || !userAnswers)
     return <p>No results available. Please take the quiz first.</p>;
 
+  const percentage = ((score / questions.length) * 100).toFixed(1);
+
   return (
     <div className="results-container">
       <h2 className="results-title">Quiz Results</h2>
 
       <p className="results-score">
         Your Score: <span>{score}</span> / {questions.length}
+      </p>
+
+      <p className="results-percentage">
+        Percentage: <span>{percentage}%</span>
       </p>
 
       <div className="results-list">

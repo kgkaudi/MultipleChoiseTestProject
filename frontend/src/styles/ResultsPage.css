@@ -88,3 +88,15 @@
   background: #ffd700;
   color: #000;
 }
+
+.results-percentage {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  color: #ffd700;
+}
+
+.results-percentage span {
+  color: #00ff7f;
+  font-weight: 700;
+}
