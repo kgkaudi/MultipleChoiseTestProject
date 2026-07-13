@@ -160,3 +160,22 @@
 .delay-3 {
   animation-delay: 0.6s;
 }
+
+/* Admin section layout */
+.admin-section {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column; /* ✅ stack vertically */
+  gap: 10px; /* space between buttons */
+  align-items: flex-start; /* align to left */
+}
+
+.admin-section .dashboard-btn {
+  width: fit-content; /* keep buttons compact */
+}
+
+.admin-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

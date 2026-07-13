@@ -34,6 +34,16 @@ export default function Navbar() {
         {user && (
           <>
             <span className="nav-user">Hello, {user.username}</span>
+
+            {/* Admin-only links */}
+            {user.role === "admin" && (
+              <>
+                <Link to="/admin" className="nav-link">Admin</Link>
+                <Link to="/admin/users" className="nav-link">Users</Link>
+                <Link to="/admin/questions" className="nav-link">Questions</Link>
+              </>
+            )}
+
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </>
         )}
@@ -50,43 +60,71 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-      <div
+        <div
           className="mobile-backdrop"
           onClick={() => setMenuOpen(false)}
-      ></div>
+        ></div>
       )}
-
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${menuOpen ? "show" : ""}`}>
-            <button
-                className="mobile-close"
-                onClick={() => setMenuOpen(false)}
-            >
-                ✕
+        <button
+          className="mobile-close"
+          onClick={() => setMenuOpen(false)}
+        >
+          ✕
+        </button>
+
+        {!user && (
+          <>
+            <Link to="/login" className="mobile-link" onClick={() => setMenuOpen(false)}>
+              Login
+            </Link>
+            <Link to="/register" className="mobile-link" onClick={() => setMenuOpen(false)}>
+              Register
+            </Link>
+          </>
+        )}
+
+        {user && (
+          <>
+            <span className="mobile-user">Hello, {user.username}</span>
+
+            {/* ✅ Admin-only mobile links */}
+            {user.role === "admin" && (
+              <>
+                <Link
+                  to="/admin"
+                  className="mobile-link"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Admin Dashboard
+                </Link>
+
+                <Link
+                  to="/admin/users"
+                  className="mobile-link"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Manage Users
+                </Link>
+
+                <Link
+                  to="/admin/questions"
+                  className="mobile-link"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Manage Questions
+                </Link>
+              </>
+            )}
+
+            <button className="mobile-logout" onClick={handleLogout}>
+              Logout
             </button>
-
-            {!user && (
-                <>
-                <Link to="/login" className="mobile-link" onClick={() => setMenuOpen(false)}>
-                    Login
-                </Link>
-                <Link to="/register" className="mobile-link" onClick={() => setMenuOpen(false)}>
-                    Register
-                </Link>
-                </>
-            )}
-
-            {user && (
-                <>
-                <span className="mobile-user">Hello, {user.username}</span>
-                <button className="mobile-logout" onClick={handleLogout}>
-                    Logout
-                </button>
-                </>
-            )}
-        </div>
-
+          </>
+        )}
+      </div>
     </nav>
   );
 }

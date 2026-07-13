@@ -48,3 +48,49 @@
   background: #222;
   color: #fff;
 }
+
+/* Action buttons */
+.admin-table button {
+  background-color: #222;
+  color: #ffd700;
+  border: 1px solid #ffd700;
+  padding: 6px 12px;
+  margin: 0 4px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.admin-table button:hover {
+  background-color: #ffd700;
+  color: #000;
+  transform: scale(1.05);
+}
+
+/* Lock button specific */
+.admin-table button:first-of-type {
+  background-color: #333;
+}
+
+/* Delete button specific */
+.admin-table button:last-of-type {
+  background-color: #550000;
+  border-color: #ff4444;
+  color: #ffcccc;
+}
+
+.admin-table button:last-of-type:hover {
+  background-color: #ff4444;
+  color: #fff;
+}
+
+.admin-table td {
+  vertical-align: middle;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px 14px;
+}

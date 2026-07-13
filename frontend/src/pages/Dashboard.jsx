@@ -33,6 +33,19 @@ export default function Dashboard() {
                 You cannot take the quiz again until an admin enables it.
               </p>
             )}
+
+            {/* Admin-only section */}
+            {user.role === "admin" && (
+              <div className="admin-section fade-in delay-4">
+                <h3 className="dashboard-subtitle">Admin Tools</h3>
+                <div className="admin-links">
+                  <Link to="/admin" className="dashboard-btn dark">Admin Dashboard</Link>
+                  <Link to="/admin/users" className="dashboard-btn dark">Manage Users</Link>
+                  <Link to="/admin/questions" className="dashboard-btn dark">Manage Questions</Link>
+                </div>
+              </div>
+            )}
+
           </>
         ) : (
           <>
