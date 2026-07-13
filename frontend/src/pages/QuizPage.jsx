@@ -14,6 +14,12 @@ export default function Quiz() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!user?.canTakeQuiz) {
+      navigate("/");
+    }
+  }, [user]);
+
+  useEffect(() => {
     api.get("/questions").then((res) => setQuestions(res.data));
   }, []);
 
@@ -44,18 +50,21 @@ export default function Quiz() {
       return;
     }
 
-    // Compute final score manually
     const finalScore = finalAnswers.reduce((acc, answer, idx) => {
       return answer === questions[idx].correctIndex ? acc + 1 : acc;
     }, 0);
 
     // Update backend
-    await api.put(`/users/${user._id}/score`, { lastScore: finalScore });
+    const res = await api.put(`/users/${user._id}/score`, { lastScore: finalScore });
 
-    // Update user context immediately
-    setUser({ ...user, lastScore: finalScore });
+    // Update context immediately with backend response
+    setUser({
+      ...user,
+      lastScore: finalScore,
+      canTakeQuiz: false,
+      dateCompleted: new Date().toISOString()
+    });
 
-    // Navigate with correct score
     navigate("/results", {
       state: { questions, userAnswers: finalAnswers, score: finalScore },
     });

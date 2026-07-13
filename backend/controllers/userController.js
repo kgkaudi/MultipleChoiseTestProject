@@ -45,21 +45,36 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// UPDATE SCORE (your existing logic)
+// UPDATE SCORE
 exports.updateScore = async (req, res) => {
   try {
-    const { id } = req.params;
     const { lastScore } = req.body;
+    const user = await User.findById(req.params.id);
 
-    const user = await User.findByIdAndUpdate(
-      id,
-      { lastScore, dateCompleted: new Date() },
-      { new: true }
-    );
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-    res.json(user);
+    // Update score, completion date, and lock quiz access
+    user.lastScore = lastScore;
+    user.dateCompleted = new Date();
+    user.canTakeQuiz = false;
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Score updated and quiz access locked.",
+      user: {
+        id: user._id,
+        lastScore: user.lastScore,
+        dateCompleted: user.dateCompleted,
+        canTakeQuiz: user.canTakeQuiz
+      }
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error("Error updating score:", err);
+    res.status(500).json({ error: "Failed to update score" });
   }
 };
 

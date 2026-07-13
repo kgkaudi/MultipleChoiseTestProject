@@ -27,13 +27,11 @@ function shuffleAnswers(questionObj) {
 async function runMigration() {
   console.log("Checking if migration is needed...");
 
-  // Check admin
   const adminEmail = "admin@test.com";
   const existingAdmin = await User.findOne({ email: adminEmail });
-
-  // Check questions
   const questionCount = await Question.countDocuments();
 
+  // If admin exists and questions exist, skip
   if (existingAdmin && questionCount >= 20) {
     console.log("Migration skipped — data already exists.");
     return;
@@ -41,19 +39,51 @@ async function runMigration() {
 
   console.log("Running migration...");
 
-  // --- ADMIN USER ---
+  /* ===========================
+     ADMIN USER
+  =========================== */
   if (!existingAdmin) {
     const hashedPassword = await bcrypt.hash("Ectoras01!", 10);
+
     await User.create({
       username: "Admin",
       email: adminEmail,
       password: hashedPassword,
-      role: "admin"
+      role: "admin",
+      canTakeQuiz: true,
+      lastScore: 0,
+      dateCompleted: null
     });
+
     console.log("Admin user created");
+  } else {
+    // Ensure admin has new fields if DB is older
+    let updated = false;
+
+    if (existingAdmin.canTakeQuiz === undefined) {
+      existingAdmin.canTakeQuiz = true;
+      updated = true;
+    }
+
+    if (existingAdmin.lastScore === undefined) {
+      existingAdmin.lastScore = 0;
+      updated = true;
+    }
+
+    if (existingAdmin.dateCompleted === undefined) {
+      existingAdmin.dateCompleted = null;
+      updated = true;
+    }
+
+    if (updated) {
+      await existingAdmin.save();
+      console.log("Admin user updated with new fields");
+    }
   }
 
-  // --- REALISTIC QUESTIONS ---
+  /* ===========================
+     SEED QUESTIONS
+  =========================== */
   if (questionCount < 20) {
     const realisticQuestions = [
       {

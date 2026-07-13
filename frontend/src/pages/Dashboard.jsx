@@ -3,7 +3,6 @@ import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import "../styles/Dashboard.css";
 
-
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
   const totalQuestions = 20;
@@ -20,13 +19,20 @@ export default function Dashboard() {
             <p className="dashboard-text fade-in delay-1">
               Hello, {user.username}!
             </p>
+
             <p className="dashboard-text fade-in delay-2">
               Last Score: {lastScore} ({percentage}%)
             </p>
 
-            <Link to="/quiz" className="dashboard-btn gold fade-in delay-3">
-              Start Quiz
-            </Link>
+            {user.canTakeQuiz ? (
+              <Link to="/quiz" className="dashboard-btn gold fade-in delay-3">
+                Start Quiz
+              </Link>
+            ) : (
+              <p className="dashboard-text fade-in delay-3 low">
+                You cannot take the quiz again until an admin enables it.
+              </p>
+            )}
           </>
         ) : (
           <>
@@ -48,9 +54,15 @@ export default function Dashboard() {
               Ready for another challenge?
             </h3>
 
-            <Link to="/quiz" className="dashboard-btn dark fade-in delay-2">
-              Begin
-            </Link>
+            {user.canTakeQuiz ? (
+              <Link to="/quiz" className="dashboard-btn dark fade-in delay-2">
+                Begin
+              </Link>
+            ) : (
+              <p className="dashboard-text fade-in delay-2 low">
+                Quiz access is locked. Contact an admin to retake the test.
+              </p>
+            )}
           </>
         ) : (
           <>
