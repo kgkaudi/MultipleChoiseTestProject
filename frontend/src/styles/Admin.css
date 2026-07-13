@@ -8,13 +8,11 @@
   min-height: 100vh;
 }
 
-/* Page title */
 .admin-title {
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
-/* Admin navigation links */
 .admin-links {
   display: flex;
   gap: 20px;
@@ -80,7 +78,7 @@
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px; /* ensures scroll instead of squish */
+  min-width: 600px;
 }
 
 .admin-table th,
@@ -104,7 +102,6 @@
 
 .admin-form input,
 .admin-form select {
-  display: block;
   margin: 8px 0;
   padding: 8px;
   width: 100%;
@@ -117,15 +114,37 @@
 }
 
 .admin-form select {
-  height: 40px; /* match input height */
+  height: 40px;
 }
 
-/* Focus glow */
-.admin-form select:focus,
-.admin-form input:focus {
+.admin-form input:focus,
+.admin-form select:focus {
   outline: none;
   border-color: #ffd700;
   box-shadow: 0 0 4px #ffd700;
+}
+
+/* ===========================
+   Success Popup
+=========================== */
+.success-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffd700;
+  color: #000;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  z-index: 9999;
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateX(0); }
+  80% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(20px); }
 }
 
 /* ===========================
@@ -150,7 +169,6 @@
     margin: 4px 0;
   }
 
-  /* Scroll hint only on mobile — show once below the table */
   .admin-table-wrapper::after {
     content: "↔ Scroll for more";
     display: block;
@@ -160,36 +178,8 @@
     margin-top: 6px;
   }
 
-  /* Mobile spacing for Add Question page */
   .admin-wrapper {
     padding-left: 50px;
     padding-right: 50px;
   }
-}
-
-/* ===========================
-   Cleanup
-=========================== */
-.admin-wrapper::after {
-  content: none; /* prevent duplicate scroll hint */
-}
-
-.success-popup {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #ffd700;
-  color: #000;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  z-index: 9999;
-  animation: fadeOut 5s forwards;
-}
-
-@keyframes fadeOut {
-  0% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
 }

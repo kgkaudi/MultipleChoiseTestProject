@@ -12,6 +12,27 @@ const {
 const User = require("../models/User");
 
 /* ===========================
+   Admin: Set quiz size for all users
+   MUST be above any :id routes
+=========================== */
+router.put("/quiz-size", async (req, res) => {
+  try {
+    const { quizSize } = req.body;
+
+    if (!quizSize || isNaN(quizSize)) {
+      return res.status(400).json({ message: "Invalid quiz size" });
+    }
+
+    await User.updateMany({}, { quizSize });
+
+    res.json({ message: `Quiz size set to ${quizSize} for all users.` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* ===========================
    User CRUD
 =========================== */
 router.post("/", createUser);
