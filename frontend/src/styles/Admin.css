@@ -173,3 +173,23 @@
 .admin-wrapper::after {
   content: none; /* prevent duplicate scroll hint */
 }
+
+.success-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffd700;
+  color: #000;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  z-index: 9999;
+  animation: fadeOut 5s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}

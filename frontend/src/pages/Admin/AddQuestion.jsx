@@ -23,15 +23,32 @@ export default function AddQuestion() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post("/questions", questionData);
-    alert("Question added successfully!");
-    setQuestionData({
-      question: "",
-      answers: ["", "", "", ""],
-      correctIndex: 0,
-      category: "",
-      difficulty: "easy",
-    });
+    try {
+      await api.post("/questions", questionData);
+
+      // Create success popup using CSS class
+      const popup = document.createElement("div");
+      popup.className = "success-popup";
+      popup.textContent = "Question added successfully!";
+      document.body.appendChild(popup);
+
+      // Remove popup after 5 seconds and redirect
+      setTimeout(() => {
+        popup.remove();
+        window.location.href = "/admin/questions";
+      }, 5000);
+
+      // Reset form
+      setQuestionData({
+        question: "",
+        answers: ["", "", "", ""],
+        correctIndex: 0,
+        category: "",
+        difficulty: "easy",
+      });
+    } catch (error) {
+      console.error("Error adding question:", error);
+    }
   };
 
   return (
