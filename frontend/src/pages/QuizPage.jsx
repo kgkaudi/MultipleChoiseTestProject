@@ -9,15 +9,17 @@ export default function Quiz() {
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [isFinished, setIsFinished] = useState(false); // new flag
 
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user?.canTakeQuiz) {
+    // Only redirect if quiz hasn't finished
+    if (!user?.canTakeQuiz && !isFinished) {
       navigate("/");
     }
-  }, [user]);
+  }, [user, isFinished, navigate]);
 
   useEffect(() => {
     api.get("/questions").then((res) => setQuestions(res.data));
@@ -30,7 +32,6 @@ export default function Quiz() {
   const handleAnswer = (i) => {
     const updatedAnswers = [...userAnswers];
     updatedAnswers[index] = i;
-
     setUserAnswers(updatedAnswers);
 
     if (i === q.correctIndex) {
@@ -54,17 +55,21 @@ export default function Quiz() {
       return answer === questions[idx].correctIndex ? acc + 1 : acc;
     }, 0);
 
-    // Update backend
-    const res = await api.put(`/users/${user._id}/score`, { lastScore: finalScore });
+    // Prevent redirect effect from firing
+    setIsFinished(true);
 
-    // Update context immediately with backend response
+    // Update backend
+    await api.put(`/users/${user._id}/score`, { lastScore: finalScore });
+
+    // Update context immediately
     setUser({
       ...user,
       lastScore: finalScore,
       canTakeQuiz: false,
-      dateCompleted: new Date().toISOString()
+      dateCompleted: new Date().toISOString(),
     });
 
+    // Redirect to results page
     navigate("/results", {
       state: { questions, userAnswers: finalAnswers, score: finalScore },
     });
