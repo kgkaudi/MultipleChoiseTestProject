@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/api";
-import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Quiz() {
   const [questions, setQuestions] = useState([]);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]);
 
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.get("/questions").then((res) => setQuestions(res.data));
@@ -19,6 +21,7 @@ export default function Quiz() {
   const q = questions[index];
 
   const handleAnswer = (i) => {
+    setUserAnswers([...userAnswers, i]); // track user choice
     if (i === q.correctIndex) setScore(score + 1);
     if (index + 1 < questions.length) setIndex(index + 1);
     else finishQuiz();
@@ -29,10 +32,13 @@ export default function Quiz() {
       console.error("User not logged in");
       return;
     }
-    console.log(user._id);
-    console.log(score);
+
     await api.put(`/users/${user._id}/score`, { lastScore: score });
-    alert(`Quiz finished! Score: ${score}`);
+
+    // navigate to results page with quiz data
+    navigate("/results", {
+      state: { questions, userAnswers, score },
+    });
   };
 
   return (

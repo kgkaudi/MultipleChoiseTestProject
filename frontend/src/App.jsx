@@ -7,12 +7,11 @@ import Dashboard from "./pages/Dashboard";
 import Questions from "./pages/Questions";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Quiz from "./pages/QuizPage";
-import Results from "./pages/Results";
+import ResultsPage from "./pages/ResultsPage";
 import Navbar from "./components/Navbar";
 
 function App() {
   const { user } = useContext(AuthContext);
-  const location = useLocation();
 
   return (
     <>
@@ -33,16 +32,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/results"
-          element={
-            <Results
-              score={location.state?.score}
-              total={location.state?.total}
-              user={user}
-            />
-          }
-        />
+        <Route path="/results" element={<ResultsPage />} />
       </Routes>
     </>
   );
