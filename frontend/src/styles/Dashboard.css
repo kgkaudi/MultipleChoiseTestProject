@@ -1,0 +1,135 @@
+.dashboard-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #f8f8f8 50%, #2f2f2f 50%);
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
+
+/* Panels */
+.dashboard-left,
+.dashboard-right {
+  width: 50%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s ease;
+}
+
+.dashboard-left {
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-right {
+  background: #2f2f2f;
+  color: #fff;
+  border-radius: 0 12px 12px 0;
+}
+
+/* Text */
+.dashboard-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.dashboard-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-text {
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+/* Buttons */
+.dashboard-btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.dashboard-btn.gold {
+  background: #d4af37;
+  color: #fff;
+}
+
+.dashboard-btn.gold:hover {
+  background: #b8962e;
+}
+
+.dashboard-btn.dark {
+  background: #444;
+  color: #fff;
+}
+
+.dashboard-btn.dark:hover {
+  background: #666;
+}
+
+/* Animations */
+@keyframes slideLeft {
+  from {
+    transform: translateX(-60px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-left {
+  animation: slideLeft 0.8s ease forwards;
+}
+
+.slide-in-right {
+  animation: slideRight 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.delay-2 {
+  animation-delay: 0.4s;
+}
+
+.delay-3 {
+  animation-delay: 0.6s;
+}
