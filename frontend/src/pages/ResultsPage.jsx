@@ -65,9 +65,6 @@ export default function ResultsPage() {
       </div>
 
       <div className="results-buttons">
-        <Link to="/quiz">
-          <button className="retry-btn">Try Again</button>
-        </Link>
         <Link to="/">
           <button className="home-btn">Go Home</button>
         </Link>

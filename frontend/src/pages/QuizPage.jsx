@@ -22,8 +22,21 @@ export default function Quiz() {
   }, [user, isFinished, navigate]);
 
   useEffect(() => {
-    api.get("/questions").then((res) => setQuestions(res.data));
-  }, []);
+    api.get("/questions").then((res) => {
+      const allQuestions = res.data;
+
+      // Read quiz size from user (fallback to 10)
+      const size = Math.min(user?.quizSize || 10, allQuestions.length);
+
+      // Shuffle questions
+      const shuffled = allQuestions.sort(() => Math.random() - 0.5);
+
+      // Pick the amount set by admin
+      const selected = shuffled.slice(0, size);
+
+      setQuestions(selected);
+    });
+  }, [user]);
 
   if (!questions.length) return <p>Loading...</p>;
 

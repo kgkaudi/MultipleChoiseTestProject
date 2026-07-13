@@ -5,7 +5,8 @@ import "../styles/Dashboard.css";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
-  const totalQuestions = 20;
+
+  const totalQuestions = user?.quizSize ?? 10;
   const lastScore = user?.lastScore ?? 0;
   const percentage = ((lastScore / totalQuestions) * 100).toFixed(1);
 
@@ -45,7 +46,7 @@ export default function Dashboard() {
                 </div>
               </div>
             )}
-
+            
           </>
         ) : (
           <>

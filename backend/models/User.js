@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     lastScore: { type: Number, default: 0 },
     canTakeQuiz: { type: Boolean, default: true },
     dateCompleted: { type: Date },
+    quizSize: { type: Number, default: 10 },
 
     // Role management
     role: { type: String, enum: ["user", "admin"], default: "user" }
