@@ -94,6 +94,14 @@
 /* ===========================
    Form Styling
 =========================== */
+.admin-form {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .admin-form input,
 .admin-form select {
   display: block;
@@ -104,6 +112,20 @@
   border: 1px solid #444;
   background: #222;
   color: #fff;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.admin-form select {
+  height: 40px; /* match input height */
+}
+
+/* Focus glow */
+.admin-form select:focus,
+.admin-form input:focus {
+  outline: none;
+  border-color: #ffd700;
+  box-shadow: 0 0 4px #ffd700;
 }
 
 /* ===========================
@@ -136,6 +158,12 @@
     color: #ffd700;
     font-size: 0.8rem;
     margin-top: 6px;
+  }
+
+  /* Mobile spacing for Add Question page */
+  .admin-wrapper {
+    padding-left: 50px;
+    padding-right: 50px;
   }
 }
 

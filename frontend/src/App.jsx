@@ -12,6 +12,7 @@ import ResultsPage from "./pages/ResultsPage";
 import Navbar from "./components/Navbar";
 
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AddQuestion from "./pages/Admin/AddQuestion";
 import UsersAdmin from "./pages/Admin/UsersAdmin";
 import QuestionsAdmin from "./pages/Admin/QuestionsAdmin";
 
@@ -79,6 +80,16 @@ function App() {
             </AdminRoute>
           }
         />
+
+        <Route
+          path="/admin/questions/add"
+          element={
+            <AdminRoute>
+              <AddQuestion />
+            </AdminRoute>
+          }
+        />
+
       </Routes>
     </>
   );

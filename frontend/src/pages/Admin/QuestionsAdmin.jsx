@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../api/api";
 import "../../styles/Admin.css"
+import { Link } from "react-router-dom";
 
 export default function QuestionsAdmin() {
   const [questions, setQuestions] = useState([]);
@@ -41,20 +42,9 @@ export default function QuestionsAdmin() {
     <div className="admin-wrapper">
       <h2 className="admin-title">Manage Questions</h2>
 
-      <div className="admin-form">
-        <input name="question" placeholder="Question" value={newQuestion.question} onChange={handleChange} />
-        {newQuestion.answers.map((a, i) => (
-          <input key={i} placeholder={`Answer ${i + 1}`} value={a} onChange={(e) => handleAnswerChange(i, e.target.value)} />
-        ))}
-        <input name="correctIndex" type="number" min="0" max="3" value={newQuestion.correctIndex} onChange={handleChange} />
-        <input name="category" placeholder="Category" value={newQuestion.category} onChange={handleChange} />
-        <select name="difficulty" value={newQuestion.difficulty} onChange={handleChange}>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-        <button onClick={createQuestion}>Add Question</button>
-      </div>
+      <Link to="/admin/questions/add" className="admin-btn">
+        Add New Question
+      </Link>
 
       <div className="admin-table-wrapper">
         <table className="admin-table">
