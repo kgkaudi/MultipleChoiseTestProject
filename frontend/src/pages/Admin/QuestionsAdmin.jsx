@@ -56,28 +56,30 @@ export default function QuestionsAdmin() {
         <button onClick={createQuestion}>Add Question</button>
       </div>
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Category</th>
-            <th>Difficulty</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {questions.map(q => (
-            <tr key={q._id}>
-              <td>{q.question}</td>
-              <td>{q.category}</td>
-              <td>{q.difficulty}</td>
-              <td>
-                <button onClick={() => deleteQuestion(q._id)}>Delete</button>
-              </td>
+      <div className="admin-table-wrapper">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Category</th>
+              <th>Difficulty</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {questions.map(q => (
+              <tr key={q._id}>
+                <td>{q.question}</td>
+                <td>{q.category}</td>
+                <td>{q.difficulty}</td>
+                <td>
+                  <button onClick={() => deleteQuestion(q._id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

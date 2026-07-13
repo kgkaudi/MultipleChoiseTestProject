@@ -1,20 +1,28 @@
+/* ===========================
+   Layout & Typography
+=========================== */
 .admin-wrapper {
-  padding: 40px;
+  padding: 40px 10px;
   background: #111;
   color: #ffd700;
   min-height: 100vh;
 }
 
+/* Page title */
 .admin-title {
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
+/* Admin navigation links */
 .admin-links {
   display: flex;
   gap: 20px;
 }
 
+/* ===========================
+   Buttons
+=========================== */
 .admin-btn {
   background: #d4af37;
   color: #000;
@@ -24,32 +32,7 @@
   font-weight: 600;
 }
 
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.admin-table th,
-.admin-table td {
-  border: 1px solid #444;
-  padding: 10px;
-  text-align: left;
-}
-
-.admin-form input,
-.admin-form select {
-  display: block;
-  margin: 8px 0;
-  padding: 8px;
-  width: 100%;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #222;
-  color: #fff;
-}
-
-/* Action buttons */
+/* Action buttons inside table */
 .admin-table button {
   background-color: #222;
   color: #ffd700;
@@ -62,19 +45,18 @@
   transition: all 0.2s ease;
 }
 
-/* Hover effect */
 .admin-table button:hover {
   background-color: #ffd700;
   color: #000;
   transform: scale(1.05);
 }
 
-/* Lock button specific */
+/* Lock button */
 .admin-table button:first-of-type {
   background-color: #333;
 }
 
-/* Delete button specific */
+/* Delete button */
 .admin-table button:last-of-type {
   background-color: #550000;
   border-color: #ff4444;
@@ -86,11 +68,80 @@
   color: #fff;
 }
 
-.admin-table td {
-  vertical-align: middle;
+/* ===========================
+   Table Styling
+=========================== */
+.admin-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* ensures scroll instead of squish */
 }
 
 .admin-table th,
 .admin-table td {
+  border: 1px solid #444;
   padding: 10px 14px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* ===========================
+   Form Styling
+=========================== */
+.admin-form input,
+.admin-form select {
+  display: block;
+  margin: 8px 0;
+  padding: 8px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+}
+
+/* ===========================
+   Responsive Design
+=========================== */
+@media (max-width: 768px) {
+  .admin-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 8px 6px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .admin-table td button {
+    display: block;
+    width: 100%;
+    margin: 4px 0;
+  }
+
+  /* Scroll hint only on mobile — show once below the table */
+  .admin-table-wrapper::after {
+    content: "↔ Scroll for more";
+    display: block;
+    text-align: center;
+    color: #ffd700;
+    font-size: 0.8rem;
+    margin-top: 6px;
+  }
+}
+
+/* ===========================
+   Cleanup
+=========================== */
+.admin-wrapper::after {
+  content: none; /* prevent duplicate scroll hint */
 }
