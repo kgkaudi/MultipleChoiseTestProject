@@ -11,19 +11,31 @@ export function AuthProvider({ children }) {
 
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  // Persist token
+  /* ===========================
+     Persist token
+  =========================== */
   useEffect(() => {
-    if (token) localStorage.setItem("token", token);
-    else localStorage.removeItem("token");
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
   }, [token]);
 
-  // Persist user
+  /* ===========================
+     Persist user
+  =========================== */
   useEffect(() => {
-    if (user) localStorage.setItem("user", JSON.stringify(user));
-    else localStorage.removeItem("user");
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
   }, [user]);
 
-  // 👇 NEW: logout function
+  /* ===========================
+     Logout
+  =========================== */
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -31,8 +43,19 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("user");
   };
 
+  /* ===========================
+     Provide context
+  =========================== */
   return (
-    <AuthContext.Provider value={{ user, setUser, token, setToken, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        token,
+        setToken,
+        logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

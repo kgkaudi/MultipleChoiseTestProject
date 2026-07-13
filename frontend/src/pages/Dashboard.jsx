@@ -6,6 +6,9 @@ import "../styles/Dashboard.css";
 
 export default function Dashboard() {
   const { user } = useContext(AuthContext);
+  const totalQuestions = 20;
+  const lastScore = user?.lastScore ?? 0;
+  const percentage = ((lastScore / totalQuestions) * 100).toFixed(1);
 
   return (
     <div className="dashboard-wrapper">
@@ -18,7 +21,7 @@ export default function Dashboard() {
               Hello, {user.username}!
             </p>
             <p className="dashboard-text fade-in delay-2">
-              Last Score: {user.lastScore ?? 0}
+              Last Score: {lastScore} ({percentage}%)
             </p>
 
             <Link to="/quiz" className="dashboard-btn gold fade-in delay-3">

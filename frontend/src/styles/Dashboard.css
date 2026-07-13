@@ -1,3 +1,6 @@
+/* ===========================
+   Layout Wrapper
+=========================== */
 .dashboard-wrapper {
   display: flex;
   justify-content: center;
@@ -8,7 +11,9 @@
   overflow: hidden;
 }
 
-/* Panels */
+/* ===========================
+   Panels
+=========================== */
 .dashboard-left,
 .dashboard-right {
   width: 50%;
@@ -31,7 +36,9 @@
   border-radius: 0 12px 12px 0;
 }
 
-/* Text */
+/* ===========================
+   Text
+=========================== */
 .dashboard-title {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -48,7 +55,25 @@
   color: #555;
 }
 
-/* Buttons */
+.dashboard-text span {
+  font-weight: 700;
+}
+
+.dashboard-text .high {
+  color: #00ff7f;
+}
+
+.dashboard-text .medium {
+  color: #ffd700;
+}
+
+.dashboard-text .low {
+  color: #ff4d4d;
+}
+
+/* ===========================
+   Buttons
+=========================== */
 .dashboard-btn {
   padding: 0.8rem 1.5rem;
   border-radius: 8px;
@@ -75,7 +100,9 @@
   background: #666;
 }
 
-/* Animations */
+/* ===========================
+   Animations
+=========================== */
 @keyframes slideLeft {
   from {
     transform: translateX(-60px);

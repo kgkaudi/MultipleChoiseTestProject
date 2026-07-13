@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import { AuthContext } from "../context/AuthContext";
-import "../styles/QuizPage.css"
+import "../styles/QuizPage.css";
 
 export default function Quiz() {
   const [questions, setQuestions] = useState([]);
@@ -10,7 +10,7 @@ export default function Quiz() {
   const [score, setScore] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
 
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,14 +22,16 @@ export default function Quiz() {
   const q = questions[index];
 
   const handleAnswer = (i) => {
-  const updatedAnswers = [...userAnswers];
-  updatedAnswers[index] = i;
+    const updatedAnswers = [...userAnswers];
+    updatedAnswers[index] = i;
 
-  setUserAnswers(updatedAnswers);
+    setUserAnswers(updatedAnswers);
 
-  if (i === q.correctIndex) setScore(score + 1);
+    if (i === q.correctIndex) {
+      setScore((prev) => prev + 1);
+    }
 
-  if (index + 1 < questions.length) {
+    if (index + 1 < questions.length) {
       setIndex(index + 1);
     } else {
       finishQuiz(updatedAnswers);
@@ -42,10 +44,20 @@ export default function Quiz() {
       return;
     }
 
-    await api.put(`/users/${user._id}/score`, { lastScore: score });
+    // Compute final score manually
+    const finalScore = finalAnswers.reduce((acc, answer, idx) => {
+      return answer === questions[idx].correctIndex ? acc + 1 : acc;
+    }, 0);
 
+    // Update backend
+    await api.put(`/users/${user._id}/score`, { lastScore: finalScore });
+
+    // Update user context immediately
+    setUser({ ...user, lastScore: finalScore });
+
+    // Navigate with correct score
     navigate("/results", {
-      state: { questions, userAnswers: finalAnswers, score },
+      state: { questions, userAnswers: finalAnswers, score: finalScore },
     });
   };
 
