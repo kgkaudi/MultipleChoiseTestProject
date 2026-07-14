@@ -1,14 +1,18 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import "../styles/Dashboard.css";
 
 export default function Dashboard() {
-  const { user } = useContext(AuthContext);
+  const { user, refreshUser } = useContext(AuthContext);
 
   const totalQuestions = user?.quizSize ?? 10;
   const lastScore = user?.lastScore ?? 0;
   const percentage = ((lastScore / totalQuestions) * 100).toFixed(1);
+
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
   return (
     <div className="dashboard-wrapper">

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import api from "../api/api";
 
 export const AuthContext = createContext();
 
@@ -34,6 +35,28 @@ export function AuthProvider({ children }) {
   }, [user]);
 
   /* ===========================
+     Refresh user from backend
+     (fixes stale canTakeQuiz)
+  =========================== */
+  const refreshUser = async () => {
+    try {
+      if (!user || !user._id) return;
+
+      const res = await api.get(`/users/${user._id}`);
+      setUser(res.data);
+    } catch (err) {
+      console.error("Failed to refresh user:", err);
+    }
+  };
+
+  /* ===========================
+     Auto-refresh on mount
+  =========================== */
+  useEffect(() => {
+    refreshUser();
+  }, []);
+
+  /* ===========================
      Logout
   =========================== */
   const logout = () => {
@@ -53,7 +76,8 @@ export function AuthProvider({ children }) {
         setUser,
         token,
         setToken,
-        logout
+        logout,
+        refreshUser
       }}
     >
       {children}
