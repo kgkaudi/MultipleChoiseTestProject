@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../api/api"
+import api from "../api/api";
 import "../styles/Profile.css";
 
 export default function Profile() {
@@ -9,44 +9,38 @@ export default function Profile() {
     new: "",
     repeat: "",
   });
+  const [showPassword, setShowPassword] = useState({
+    current: false,
+    new: false,
+    repeat: false,
+  });
 
   useEffect(() => {
-    api
-      .get("http://localhost:5000/api/users/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+    api.get("/users/me")
       .then(res => setUser(res.data))
       .catch(err => console.error(err));
   }, []);
 
   const handleChangePassword = async () => {
-    console.log(passwords)
-
     if (passwords.new !== passwords.repeat) {
       alert("New passwords do not match!");
       return;
     }
-    
+
     try {
-      await api.put(
-        "/api/users/change-password",
-        {
-          current: passwords.current,
-          new: passwords.new,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      await api.put("/users/change-password", {
+        current: passwords.current,
+        new: passwords.new,
+      });
       alert("Password updated successfully!");
       setPasswords({ current: "", new: "", repeat: "" });
     } catch (err) {
       alert(err.response?.data?.error || "Failed to update password");
     }
+  };
+
+  const toggleVisibility = (field) => {
+    setShowPassword(prev => ({ ...prev, [field]: !prev[field] }));
   };
 
   if (!user) {
@@ -70,24 +64,28 @@ export default function Profile() {
 
         <h3 className="profile-subtitle">Change Password</h3>
         <div className="profile-inputs">
-          <input
-            type="password"
-            placeholder="Current password"
-            value={passwords.current}
-            onChange={e => setPasswords({ ...passwords, current: e.target.value })}
-          />
-          <input
-            type="password"
-            placeholder="New password"
-            value={passwords.new}
-            onChange={e => setPasswords({ ...passwords, new: e.target.value })}
-          />
-          <input
-            type="password"
-            placeholder="Repeat new password"
-            value={passwords.repeat}
-            onChange={e => setPasswords({ ...passwords, repeat: e.target.value })}
-          />
+          {["current", "new", "repeat"].map((field, index) => (
+            <div key={index} className="password-field">
+              <input
+                type={showPassword[field] ? "text" : "password"}
+                placeholder={
+                  field === "current"
+                    ? "Current password"
+                    : field === "new"
+                    ? "New password"
+                    : "Repeat new password"
+                }
+                value={passwords[field]}
+                onChange={e => setPasswords({ ...passwords, [field]: e.target.value })}
+              />
+              <span
+                className="toggle-password"
+                onClick={() => toggleVisibility(field)}
+              >
+                {showPassword[field] ? "Hide" : "Show"}
+              </span>
+            </div>
+          ))}
           <button onClick={handleChangePassword}>Update Password</button>
         </div>
       </div>
