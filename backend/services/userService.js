@@ -1,4 +1,5 @@
 const userRepo = require("../repositories/userRepository");
+const bcrypt = require("bcryptjs");
 
 exports.createUser = async (data) => {
   return await userRepo.create(data);
@@ -43,4 +44,29 @@ exports.toggleQuizAccess = async (id, canTakeQuiz) => {
   user.canTakeQuiz = canTakeQuiz;
   await user.save();
   return user;
+};
+
+/* ===========================
+   GET PROFILE
+=========================== */
+exports.getProfile = async (userId) => {
+  const user = await userRepo.findById(userId);
+  if (!user) throw new Error("User not found");
+  return user;
+};
+
+/* ===========================
+   CHANGE PASSWORD
+=========================== */
+exports.changePassword = async (userId, currentPassword, newPassword) => {
+  const user = await userRepo.findById(userId);
+  if (!user) throw new Error("User not found");
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) throw new Error("Incorrect current password");
+
+  user.password = await bcrypt.hash(newPassword, 10);
+  await userRepo.save(user);
+
+  return { message: "Password updated successfully" };
 };

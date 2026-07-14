@@ -9,8 +9,12 @@ const {
   updateScore,
   deleteUser,
   toggleQuizAccess,
-  setQuizSizeForAll
+  setQuizSizeForAll,
+  getProfile,
+  changePassword
 } = require("../controllers/userController");
+
+const { protect } = require("../middleware/authMiddleware");
 
 /* ===========================
    Admin: Set quiz size for all users
@@ -22,6 +26,10 @@ router.put("/quiz-size", setQuizSizeForAll);
    User CRUD
 =========================== */
 router.post("/", createUser);
+
+router.get("/me", protect, getProfile);
+router.put("/change-password", protect, changePassword);
+
 router.get("/", getUsers);
 router.get("/:id", getUserById);
 router.put("/:id", updateUser);

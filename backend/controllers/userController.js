@@ -123,3 +123,33 @@ exports.toggleQuizAccess = async (req, res) => {
     res.status(500).json({ error: "Failed to update quiz access" });
   }
 };
+
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await userService.getProfile(req.user.id);
+    res.json({
+      id: user._id,
+      name: user.username,
+      email: user.email,
+      role: user.role,
+      canTakeQuiz: user.canTakeQuiz,
+      quizSize: user.quizSize,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { current, new: newPassword } = req.body;
+    const result = await userService.changePassword(
+      req.user.id,
+      current,
+      newPassword
+    );
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};

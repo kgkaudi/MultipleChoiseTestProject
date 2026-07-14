@@ -35,6 +35,9 @@ export default function Navbar() {
           <>
             <span className="nav-user">Hello, {user.username}</span>
 
+                {/* Profile link */}
+            <Link to="/profile" className="nav-link">Profile</Link>
+
             {/* Admin-only links */}
             {user.role === "admin" && (
               <>
@@ -89,6 +92,15 @@ export default function Navbar() {
         {user && (
           <>
             <span className="mobile-user">Hello, {user.username}</span>
+
+            {/* Profile link */}
+            <Link
+              to="/profile"
+              className="mobile-link"
+              onClick={() => setMenuOpen(false)}
+            >
+              Profile
+            </Link>
 
             {/* ✅ Admin-only mobile links */}
             {user.role === "admin" && (

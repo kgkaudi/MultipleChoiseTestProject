@@ -9,6 +9,7 @@ import Questions from "./pages/Questions";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Quiz from "./pages/QuizPage";
 import ResultsPage from "./pages/ResultsPage";
+import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -39,6 +40,7 @@ function App() {
         <Route path="/questions" element={<Questions />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
 
         <Route
           path="/quiz"
