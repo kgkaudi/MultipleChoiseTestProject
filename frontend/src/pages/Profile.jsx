@@ -14,6 +14,7 @@ export default function Profile() {
     new: false,
     repeat: false,
   });
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
     api.get("/users/me")
@@ -22,8 +23,10 @@ export default function Profile() {
   }, []);
 
   const handleChangePassword = async () => {
+    setMessage({ type: "", text: "" });
+
     if (passwords.new !== passwords.repeat) {
-      alert("New passwords do not match!");
+      setMessage({ type: "error", text: "New passwords do not match!" });
       return;
     }
 
@@ -32,10 +35,13 @@ export default function Profile() {
         current: passwords.current,
         new: passwords.new,
       });
-      alert("Password updated successfully!");
+      setMessage({ type: "success", text: "Password updated successfully!" });
       setPasswords({ current: "", new: "", repeat: "" });
     } catch (err) {
-      alert(err.response?.data?.error || "Failed to update password");
+      setMessage({
+        type: "error",
+        text: err.response?.data?.error || "Failed to update password",
+      });
     }
   };
 
@@ -86,6 +92,13 @@ export default function Profile() {
               </span>
             </div>
           ))}
+
+          {message.text && (
+            <p className={`profile-message ${message.type}`}>
+              {message.text}
+            </p>
+          )}
+
           <button onClick={handleChangePassword}>Update Password</button>
         </div>
       </div>

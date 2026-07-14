@@ -122,3 +122,29 @@
     max-width: 100%;
   }
 }
+
+/* ===========================
+   Inline feedback messages
+=========================== */
+.profile-message {
+  width: 100%;
+  max-width: 320px;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.profile-message.error {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(220, 53, 69, 0.4);
+}
+
+.profile-message.success {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: #4dd67a;
+  border: 1px solid rgba(40, 167, 69, 0.4);
+}
