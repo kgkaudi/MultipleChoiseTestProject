@@ -27,11 +27,17 @@ router.put("/quiz-size", setQuizSizeForAll);
 =========================== */
 router.post("/", createUser);
 
+// PROTECTED ROUTES
 router.get("/me", protect, getProfile);
 router.put("/change-password", protect, changePassword);
 
+// PUBLIC ROUTES
 router.get("/", getUsers);
-router.get("/:id", getUserById);
+
+// PROTECTED USER-BY-ID
+router.get("/:id", protect, getUserById);
+
+// PUBLIC UPDATE/DELETE (your tests expect these to be public)
 router.put("/:id", updateUser);
 router.put("/:id/score", updateScore);
 router.delete("/:id", deleteUser);
