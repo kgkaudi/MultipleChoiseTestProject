@@ -6,8 +6,26 @@ const questionService = require("../services/questionService");
 =========================== */
 exports.createQuestion = async (req, res) => {
   try {
-    const question = await questionService.createQuestion(req.body);
-    return res.status(201).json(question);
+    const { question, answers, correctIndex, category } = req.body;
+
+    // Validate answers + correctIndex
+    if (
+      !Array.isArray(answers) ||
+      answers.length === 0 ||
+      correctIndex < 0 ||
+      correctIndex >= answers.length
+    ) {
+      return res.status(400).json({ error: "Invalid correctIndex" });
+    }
+
+    const created = await questionService.createQuestion({
+      question,
+      answers,
+      correctIndex,
+      category
+    });
+
+    return res.status(201).json(created);
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -32,8 +50,10 @@ exports.getQuestionById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id))
+    // Invalid ObjectId → 404 (tests expect this)
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Question not found" });
+    }
 
     const question = await questionService.getQuestionById(id);
     if (!question) return res.status(404).json({ error: "Question not found" });
@@ -51,13 +71,28 @@ exports.updateQuestion = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id))
+    // Invalid ObjectId → 404 (tests expect this)
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Question not found" });
+    }
 
-    const question = await questionService.updateQuestion(id, req.body);
-    if (!question) return res.status(404).json({ error: "Question not found" });
+    const { answers, correctIndex } = req.body;
 
-    return res.status(200).json(question);
+    // Validate correctIndex only if answers provided
+    if (
+      answers &&
+      (!Array.isArray(answers) ||
+        answers.length === 0 ||
+        correctIndex < 0 ||
+        correctIndex >= answers.length)
+    ) {
+      return res.status(400).json({ error: "Invalid correctIndex" });
+    }
+
+    const updated = await questionService.updateQuestion(id, req.body);
+    if (!updated) return res.status(404).json({ error: "Question not found" });
+
+    return res.status(200).json(updated);
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -70,11 +105,13 @@ exports.deleteQuestion = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id))
+    // Invalid ObjectId → 404 (tests expect this)
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Question not found" });
+    }
 
-    const question = await questionService.deleteQuestion(id);
-    if (!question) return res.status(404).json({ error: "Question not found" });
+    const deleted = await questionService.deleteQuestion(id);
+    if (!deleted) return res.status(404).json({ error: "Question not found" });
 
     return res.status(200).json({ message: "Question deleted" });
   } catch (err) {
