@@ -6,19 +6,16 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 
-    // Quiz tracking
     lastScore: { type: Number, default: 0 },
     canTakeQuiz: { type: Boolean, default: true },
     dateCompleted: { type: Date },
     quizSize: { type: Number, default: 10 },
 
-    // Role management
     role: { type: String, enum: ["user", "admin"], default: "user" }
   },
   { timestamps: true }
 );
 
-// Optional helper: mark quiz completion
 userSchema.methods.markQuizCompleted = function (score) {
   this.lastScore = score;
   this.dateCompleted = new Date();
@@ -26,4 +23,4 @@ userSchema.methods.markQuizCompleted = function (score) {
   return this.save();
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);

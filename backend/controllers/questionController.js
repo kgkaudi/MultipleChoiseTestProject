@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const questionService = require("../services/questionService");
 
 /* ===========================
@@ -6,9 +7,9 @@ const questionService = require("../services/questionService");
 exports.createQuestion = async (req, res) => {
   try {
     const question = await questionService.createQuestion(req.body);
-    res.json(question);
+    return res.status(201).json(question);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -18,9 +19,9 @@ exports.createQuestion = async (req, res) => {
 exports.getQuestions = async (req, res) => {
   try {
     const questions = await questionService.getQuestions();
-    res.json(questions);
+    return res.status(200).json(questions);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -29,11 +30,17 @@ exports.getQuestions = async (req, res) => {
 =========================== */
 exports.getQuestionById = async (req, res) => {
   try {
-    const question = await questionService.getQuestionById(req.params.id);
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).json({ error: "Question not found" });
+
+    const question = await questionService.getQuestionById(id);
     if (!question) return res.status(404).json({ error: "Question not found" });
-    res.json(question);
+
+    return res.status(200).json(question);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -42,13 +49,17 @@ exports.getQuestionById = async (req, res) => {
 =========================== */
 exports.updateQuestion = async (req, res) => {
   try {
-    const question = await questionService.updateQuestion(
-      req.params.id,
-      req.body,
-    );
-    res.json(question);
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).json({ error: "Question not found" });
+
+    const question = await questionService.updateQuestion(id, req.body);
+    if (!question) return res.status(404).json({ error: "Question not found" });
+
+    return res.status(200).json(question);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -57,10 +68,16 @@ exports.updateQuestion = async (req, res) => {
 =========================== */
 exports.deleteQuestion = async (req, res) => {
   try {
-    const question = await questionService.deleteQuestion(req.params.id);
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).json({ error: "Question not found" });
+
+    const question = await questionService.deleteQuestion(id);
     if (!question) return res.status(404).json({ error: "Question not found" });
-    res.json({ message: "Question deleted" });
+
+    return res.status(200).json({ message: "Question deleted" });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };

@@ -2,6 +2,9 @@ const userRepo = require("../repositories/userRepository");
 const bcrypt = require("bcryptjs");
 
 exports.createUser = async (data) => {
+  if (data.password) {
+    data.password = await bcrypt.hash(data.password, 10);
+  }
   return await userRepo.create(data);
 };
 
@@ -46,18 +49,12 @@ exports.toggleQuizAccess = async (id, canTakeQuiz) => {
   return user;
 };
 
-/* ===========================
-   GET PROFILE
-=========================== */
 exports.getProfile = async (userId) => {
   const user = await userRepo.findById(userId);
   if (!user) throw new Error("User not found");
   return user;
 };
 
-/* ===========================
-   CHANGE PASSWORD
-=========================== */
 exports.changePassword = async (userId, currentPassword, newPassword) => {
   const user = await userRepo.findById(userId);
   if (!user) throw new Error("User not found");

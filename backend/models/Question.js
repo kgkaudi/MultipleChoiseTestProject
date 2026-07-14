@@ -8,4 +8,4 @@ const questionSchema = new mongoose.Schema({
   category: { type: String, required: true }
 });
 
-module.exports = mongoose.model("Question", questionSchema);
+module.exports = mongoose.models.Question || mongoose.model("Question", questionSchema);

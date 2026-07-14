@@ -1,4 +1,5 @@
 const userService = require("../services/userService");
+const mongoose = require("mongoose");
 
 /* ===========================
    CREATE USER
@@ -6,9 +7,9 @@ const userService = require("../services/userService");
 exports.createUser = async (req, res) => {
   try {
     const user = await userService.createUser(req.body);
-    res.json(user);
+    return res.status(200).json(user);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -18,9 +19,9 @@ exports.createUser = async (req, res) => {
 exports.getUsers = async (req, res) => {
   try {
     const users = await userService.getUsers();
-    res.json(users);
+    return res.status(200).json(users);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -29,11 +30,21 @@ exports.getUsers = async (req, res) => {
 =========================== */
 exports.getUserById = async (req, res) => {
   try {
-    const user = await userService.getUserById(req.params.id);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.json(user);
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const user = await userService.getUserById(id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json(user);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -42,10 +53,21 @@ exports.getUserById = async (req, res) => {
 =========================== */
 exports.updateUser = async (req, res) => {
   try {
-    const user = await userService.updateUser(req.params.id, req.body);
-    res.json(user);
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const updated = await userService.updateUser(id, req.body);
+
+    if (!updated) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json(updated);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -54,19 +76,26 @@ exports.updateUser = async (req, res) => {
 =========================== */
 exports.updateScore = async (req, res) => {
   try {
-    const user = await userService.updateScore(
-      req.params.id,
-      req.body.lastScore,
-    );
-    if (!user) return res.status(404).json({ error: "User not found" });
+    const { id } = req.params;
 
-    res.json({
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const updated = await userService.updateScore(id, req.body.lastScore);
+
+    if (!updated) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({
       success: true,
       message: "Score updated and quiz access locked.",
-      user,
+      user: updated
     });
+
   } catch (err) {
-    res.status(500).json({ error: "Failed to update score" });
+    return res.status(500).json({ error: "Failed to update score" });
   }
 };
 
@@ -75,11 +104,22 @@ exports.updateScore = async (req, res) => {
 =========================== */
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await userService.deleteUser(req.params.id);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.json({ message: "User deleted" });
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const deleted = await userService.deleteUser(id);
+
+    if (!deleted) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "User deleted" });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -96,9 +136,12 @@ exports.setQuizSizeForAll = async (req, res) => {
 
     await userService.setQuizSizeForAll(quizSize);
 
-    res.json({ message: `Quiz size set to ${quizSize} for all users.` });
+    return res.status(200).json({
+      message: `Quiz size set to ${quizSize} for all users.`
+    });
+
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -107,49 +150,66 @@ exports.setQuizSizeForAll = async (req, res) => {
 =========================== */
 exports.toggleQuizAccess = async (req, res) => {
   try {
-    const user = await userService.toggleQuizAccess(
-      req.params.id,
-      req.body.canTakeQuiz,
-    );
+    const { id } = req.params;
 
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-    res.json({
+    const updated = await userService.toggleQuizAccess(id, req.body.canTakeQuiz);
+
+    if (!updated) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({
       success: true,
-      userId: user._id,
-      canTakeQuiz: user.canTakeQuiz,
+      userId: updated._id,
+      canTakeQuiz: updated.canTakeQuiz
     });
+
   } catch (err) {
-    res.status(500).json({ error: "Failed to update quiz access" });
+    return res.status(500).json({ error: "Failed to update quiz access" });
   }
 };
 
+/* ===========================
+   GET PROFILE
+=========================== */
 exports.getProfile = async (req, res) => {
   try {
     const user = await userService.getProfile(req.user.id);
-    res.json({
+
+    return res.status(200).json({
       id: user._id,
       name: user.username,
       email: user.email,
       role: user.role,
       canTakeQuiz: user.canTakeQuiz,
-      quizSize: user.quizSize,
+      quizSize: user.quizSize
     });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
+/* ===========================
+   CHANGE PASSWORD
+=========================== */
 exports.changePassword = async (req, res) => {
   try {
     const { current, new: newPassword } = req.body;
+
     const result = await userService.changePassword(
       req.user.id,
       current,
       newPassword
     );
-    res.json(result);
+
+    return res.status(200).json(result);
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };

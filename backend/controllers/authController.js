@@ -11,12 +11,12 @@ exports.register = async (req, res) => {
       return res.status(400).json({ error: result.error });
     }
 
-    res.json({
+    return res.status(200).json({
       message: "User registered",
       user: result.user
     });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
 
@@ -31,11 +31,11 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: result.error });
     }
 
-    res.json({
+    return res.status(200).json({
       token: result.token,
       user: result.user
     });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: err.message });
   }
 };
