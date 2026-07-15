@@ -65,7 +65,6 @@ export default function Profile() {
         <h2 className="profile-title">Profile</h2>
         <p><strong>Name:</strong> {user.name}</p>
         <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Role:</strong> {user.role}</p>
         <p><strong>Quiz Size:</strong> {user.quizSize}</p>
 
         <h3 className="profile-subtitle">Change Password</h3>

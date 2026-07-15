@@ -37,10 +37,7 @@ exports.getUserById = async (req, res) => {
     }
 
     const user = await userService.getUserById(id);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     return res.status(200).json(user);
   } catch (err) {
@@ -60,14 +57,40 @@ exports.updateUser = async (req, res) => {
     }
 
     const updated = await userService.updateUser(id, req.body);
-
-    if (!updated) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!updated) return res.status(404).json({ error: "User not found" });
 
     return res.status(200).json(updated);
   } catch (err) {
     return res.status(400).json({ error: err.message });
+  }
+};
+
+/* ===========================
+   ADMIN: Update Role
+=========================== */
+exports.updateRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (!["admin", "user"].includes(role)) {
+      return res.status(400).json({ error: "Invalid role" });
+    }
+
+    const updated = await userService.updateRole(id, role);
+    if (!updated) return res.status(404).json({ error: "User not found" });
+
+    return res.status(200).json({
+      success: true,
+      message: `User role updated to ${role}`,
+      user: updated
+    });
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to update role" });
   }
 };
 
@@ -83,17 +106,13 @@ exports.updateScore = async (req, res) => {
     }
 
     const updated = await userService.updateScore(id, req.body.lastScore);
-
-    if (!updated) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!updated) return res.status(404).json({ error: "User not found" });
 
     return res.status(200).json({
       success: true,
       message: "Score updated and quiz access locked.",
       user: updated
     });
-
   } catch (err) {
     return res.status(500).json({ error: "Failed to update score" });
   }
@@ -111,13 +130,9 @@ exports.deleteUser = async (req, res) => {
     }
 
     const deleted = await userService.deleteUser(id);
-
-    if (!deleted) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!deleted) return res.status(404).json({ error: "User not found" });
 
     return res.status(200).json({ message: "User deleted" });
-
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -139,7 +154,6 @@ exports.setQuizSizeForAll = async (req, res) => {
     return res.status(200).json({
       message: `Quiz size set to ${quizSize} for all users.`
     });
-
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
@@ -157,17 +171,13 @@ exports.toggleQuizAccess = async (req, res) => {
     }
 
     const updated = await userService.toggleQuizAccess(id, req.body.canTakeQuiz);
-
-    if (!updated) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!updated) return res.status(404).json({ error: "User not found" });
 
     return res.status(200).json({
       success: true,
       userId: updated._id,
       canTakeQuiz: updated.canTakeQuiz
     });
-
   } catch (err) {
     return res.status(500).json({ error: "Failed to update quiz access" });
   }
@@ -188,7 +198,6 @@ exports.getProfile = async (req, res) => {
       canTakeQuiz: user.canTakeQuiz,
       quizSize: user.quizSize
     });
-
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -208,7 +217,6 @@ exports.changePassword = async (req, res) => {
     );
 
     return res.status(200).json(result);
-
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

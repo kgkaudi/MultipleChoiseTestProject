@@ -7,6 +7,7 @@ const {
   getUserById,
   updateUser,
   updateScore,
+  updateRole,
   deleteUser,
   toggleQuizAccess,
   setQuizSizeForAll,
@@ -14,13 +15,12 @@ const {
   changePassword
 } = require("../controllers/userController");
 
-const { protect } = require("../middleware/authMiddleware");
+const { protect, adminOnly } = require("../middleware/authMiddleware");
 
 /* ===========================
    Admin: Set quiz size for all users
-   (must be above any :id routes)
 =========================== */
-router.put("/quiz-size", setQuizSizeForAll);
+router.put("/quiz-size", protect, adminOnly, setQuizSizeForAll);
 
 /* ===========================
    User CRUD
@@ -37,7 +37,10 @@ router.get("/", getUsers);
 // PROTECTED USER-BY-ID
 router.get("/:id", protect, getUserById);
 
-// PUBLIC UPDATE/DELETE (your tests expect these to be public)
+// PUBLIC ROLE
+router.put("/:id/role", protect, adminOnly, updateRole);
+
+// PUBLIC UPDATE/DELETE
 router.put("/:id", updateUser);
 router.put("/:id/score", updateScore);
 router.delete("/:id", deleteUser);
@@ -45,6 +48,6 @@ router.delete("/:id", deleteUser);
 /* ===========================
    Admin: Toggle quiz access
 =========================== */
-router.put("/:id/toggle-quiz", toggleQuizAccess);
+router.put("/:id/toggle-quiz", protect, adminOnly, toggleQuizAccess);
 
 module.exports = router;
