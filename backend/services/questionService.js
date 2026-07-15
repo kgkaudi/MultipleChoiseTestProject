@@ -1,21 +1,41 @@
 const questionRepo = require("../repositories/questionRepository");
 
-exports.createQuestion = async (data) => {
-  return await questionRepo.create(data);
+/* ===========================
+   CREATE QUESTION
+=========================== */
+exports.createQuestion = (data) => {
+  return questionRepo.create(data);
 };
 
-exports.getQuestions = async () => {
-  return await questionRepo.findAll();
+/* ===========================
+   READ ALL QUESTIONS
+=========================== */
+exports.getQuestions = () => {
+  return questionRepo.findAll();
 };
 
-exports.getQuestionById = async (id) => {
-  return await questionRepo.findById(id);
+/* ===========================
+   READ SINGLE QUESTION
+=========================== */
+exports.getQuestionById = (id) => {
+  return questionRepo.findById(id);
 };
 
+/* ===========================
+   UPDATE QUESTION
+=========================== */
 exports.updateQuestion = async (id, data) => {
-  return await questionRepo.updateById(id, data);
+  // Ensure validators run on updated data
+  return questionRepo.updateById(id, data, {
+    new: true,
+    runValidators: true,
+    context: "query",
+  });
 };
 
-exports.deleteQuestion = async (id) => {
-  return await questionRepo.deleteById(id);
+/* ===========================
+   DELETE QUESTION
+=========================== */
+exports.deleteQuestion = (id) => {
+  return questionRepo.deleteById(id);
 };

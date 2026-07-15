@@ -1,26 +1,48 @@
 const Question = require("../models/Question");
 
+/* ===========================
+   CREATE
+=========================== */
 exports.create = (data) => {
-  const Question = require("../models/Question");
   return Question.create(data);
 };
 
+/* ===========================
+   FIND ALL
+=========================== */
 exports.findAll = () => {
-  const Question = require("../models/Question");
-  return Question.find();
+  return Question.find().lean();
 };
 
+/* ===========================
+   FIND BY ID
+=========================== */
 exports.findById = (id) => {
-  const Question = require("../models/Question");
-  return Question.findById(id);
+  return Question.findById(id).lean();
 };
 
-exports.updateById = (id, data) => {
-  const Question = require("../models/Question");
-  return Question.findByIdAndUpdate(id, data, { new: true });
+/* ===========================
+   UPDATE BY ID
+=========================== */
+exports.updateById = async (id, data) => {
+  try {
+    return await Question.findByIdAndUpdate(id, data, {
+      returnDocument: "after",
+      runValidators: true,
+      context: "query",
+    });
+  } catch (err) {
+    // Fallback to manual save if validation fails
+    const question = await Question.findById(id);
+    if (!question) throw err;
+    Object.assign(question, data);
+    return question.save();
+  }
 };
 
+/* ===========================
+   DELETE BY ID
+=========================== */
 exports.deleteById = (id) => {
-  const Question = require("../models/Question");
-  return Question.findByIdAndDelete(id);
+  return Question.findByIdAndDelete(id).lean();
 };

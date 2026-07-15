@@ -6,23 +6,52 @@ const questionService = require("../services/questionService");
 =========================== */
 exports.createQuestion = async (req, res) => {
   try {
-    const { question, answers, correctIndex, category } = req.body;
+    const { question, answers, correctIndex, category, difficulty } = req.body;
 
-    // Validate answers + correctIndex
-    if (
-      !Array.isArray(answers) ||
-      answers.length === 0 ||
-      correctIndex < 0 ||
-      correctIndex >= answers.length
-    ) {
+    // Validate question
+    if (!question || typeof question !== "string" || question.trim() === "") {
+      return res.status(400).json({ error: "Question text is required" });
+    }
+
+    // Validate answers
+    if (!Array.isArray(answers) || answers.length === 0) {
+      return res.status(400).json({ error: "Answers must be a non-empty array" });
+    }
+
+    // Normalize answers to exactly 4
+    let normalizedAnswers = [...answers];
+    if (normalizedAnswers.length > 4) normalizedAnswers = normalizedAnswers.slice(0, 4);
+    while (normalizedAnswers.length < 4) normalizedAnswers.push("");
+
+    // Validate correctIndex
+    const index = Number(correctIndex);
+    if (isNaN(index) || index < 0 || index >= normalizedAnswers.length) {
       return res.status(400).json({ error: "Invalid correctIndex" });
+    }
+
+    // difficulty REQUIRED
+    if (difficulty === undefined) {
+      return res.status(400).json({ error: "Difficulty is required" });
+    }
+
+    const validDiff = ["easy", "medium", "hard"];
+    if (!validDiff.includes(difficulty)) {
+      return res.status(400).json({ error: "Invalid difficulty value" });
+    }
+
+    // Validate category if provided
+    if (category !== undefined) {
+      if (typeof category !== "string" || category.trim() === "") {
+        return res.status(400).json({ error: "Category cannot be empty" });
+      }
     }
 
     const created = await questionService.createQuestion({
       question,
-      answers,
-      correctIndex,
-      category
+      answers: normalizedAnswers,
+      correctIndex: index,
+      category,
+      difficulty,
     });
 
     return res.status(201).json(created);
@@ -50,7 +79,6 @@ exports.getQuestionById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Invalid ObjectId → 404 (tests expect this)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Question not found" });
     }
@@ -71,26 +99,74 @@ exports.updateQuestion = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Invalid ObjectId → 404 (tests expect this)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Question not found" });
     }
 
-    const { answers, correctIndex } = req.body;
-
-    // Validate correctIndex only if answers provided
-    if (
-      answers &&
-      (!Array.isArray(answers) ||
-        answers.length === 0 ||
-        correctIndex < 0 ||
-        correctIndex >= answers.length)
-    ) {
-      return res.status(400).json({ error: "Invalid correctIndex" });
+    // Check existence BEFORE validating body
+    const exists = await questionService.getQuestionById(id);
+    if (!exists) {
+      return res.status(404).json({ error: "Question not found" });
     }
 
-    const updated = await questionService.updateQuestion(id, req.body);
-    if (!updated) return res.status(404).json({ error: "Question not found" });
+    const { question, answers, correctIndex, difficulty, category } = req.body;
+
+    // Validate question text if provided
+    if (question !== undefined) {
+      if (typeof question !== "string" || question.trim() === "") {
+        return res.status(400).json({ error: "Question text cannot be empty" });
+      }
+    }
+
+    // Validate answers if provided
+    let normalizedAnswers;
+    if (answers !== undefined) {
+      if (!Array.isArray(answers) || answers.length === 0) {
+        return res.status(400).json({ error: "Answers must be a non-empty array" });
+      }
+
+      // Normalize answers to exactly 4
+      normalizedAnswers = [...answers];
+      if (normalizedAnswers.length > 4) normalizedAnswers = normalizedAnswers.slice(0, 4);
+      while (normalizedAnswers.length < 4) normalizedAnswers.push("");
+
+      if (correctIndex === undefined) {
+        return res.status(400).json({ error: "Invalid correctIndex" });
+      }
+
+      const index = Number(correctIndex);
+      if (isNaN(index) || index < 0 || index >= normalizedAnswers.length) {
+        return res.status(400).json({ error: "Invalid correctIndex" });
+      }
+
+      req.body.correctIndex = index;
+    }
+
+    // difficulty REQUIRED
+    if (difficulty === undefined) {
+      return res.status(400).json({ error: "Difficulty is required" });
+    }
+
+    const validDiff = ["easy", "medium", "hard"];
+    if (!validDiff.includes(difficulty)) {
+      return res.status(400).json({ error: "Invalid difficulty value" });
+    }
+
+    // Validate category if provided
+    if (category !== undefined) {
+      if (typeof category !== "string" || category.trim() === "") {
+        return res.status(400).json({ error: "Category cannot be empty" });
+      }
+    }
+
+    const updateData = {};
+    if (question !== undefined) updateData.question = question;
+    if (answers !== undefined) updateData.answers = normalizedAnswers;
+    if (correctIndex !== undefined) updateData.correctIndex = req.body.correctIndex;
+    updateData.difficulty = difficulty; // always required
+    if (category !== undefined) updateData.category = category;
+
+    const updated = await questionService.updateQuestion(id, updateData);
 
     return res.status(200).json(updated);
   } catch (err) {
@@ -105,7 +181,6 @@ exports.deleteQuestion = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Invalid ObjectId → 404 (tests expect this)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Question not found" });
     }

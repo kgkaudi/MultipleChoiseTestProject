@@ -12,10 +12,12 @@ const {
 const { protect } = require("../middleware/authMiddleware");
 
 // All question routes require authentication
-router.post("/", protect, createQuestion);
-router.get("/", protect, getQuestions);
-router.get("/:id", protect, getQuestionById);
-router.put("/:id", protect, updateQuestion);
-router.delete("/:id", protect, deleteQuestion);
+router.use(protect);
+
+router.post("/", createQuestion);
+router.get("/", getQuestions);
+router.get("/:id", getQuestionById);
+router.put("/:id", updateQuestion);
+router.delete("/:id", deleteQuestion);
 
 module.exports = router;
