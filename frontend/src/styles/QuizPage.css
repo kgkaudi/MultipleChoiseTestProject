@@ -1,31 +1,31 @@
 /* ===========================
    Quiz Container
-   =========================== */
+=========================== */
 .quiz-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 80vh;
-  background: #0b0b0b;
-  color: #ffd700;
+  background: var(--bg);
+  color: var(--text);
   padding: 40px 20px;
   border-radius: 10px;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-  transition: all 0.3s ease;
+  box-shadow: 0 0 20px var(--accent-border);
+  transition: background 0.3s ease, color 0.3s ease;
   animation: fadeIn 0.4s ease-in-out;
 }
 
 /* ===========================
    Question Title
-   =========================== */
+=========================== */
 .quiz-container h2 {
   font-size: 1.8rem;
   margin-bottom: 40px;
   text-align: center;
-  color: #fff;
+  color: var(--text-h);
   letter-spacing: 0.5px;
-  border-bottom: 2px solid #ffd700;
+  border-bottom: 2px solid var(--accent);
   padding-bottom: 10px;
   width: fit-content;
   animation: fadeIn 0.4s ease-in-out;
@@ -33,11 +33,11 @@
 
 /* ===========================
    Answer Buttons
-   =========================== */
+=========================== */
 .quiz-container button {
   background: transparent;
-  border: 2px solid #ffd700;
-  color: #ffd700;
+  border: 2px solid var(--accent);
+  color: var(--accent);
   font-size: 1.1rem;
   font-weight: 600;
   padding: 12px 25px;
@@ -45,15 +45,15 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 6px var(--accent-border);
   animation: fadeIn 0.4s ease-in-out;
 }
 
 .quiz-container button:hover {
-  background: #ffd700;
-  color: #000;
+  background: var(--accent);
+  color: var(--bg);
   transform: translateY(-2px);
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  box-shadow: 0 0 12px var(--accent-border);
 }
 
 .quiz-container button:active {
@@ -62,7 +62,7 @@
 
 /* ===========================
    Fade-in Animation
-   =========================== */
+=========================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -76,7 +76,7 @@
 
 /* ===========================
    Responsive Layout
-   =========================== */
+=========================== */
 @media (max-width: 768px) {
   .quiz-container h2 {
     font-size: 1.4rem;

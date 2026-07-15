@@ -6,9 +6,17 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(to right, #f8f8f8 50%, #2f2f2f 50%);
+
+  /* Theme-aware split background */
+  background: linear-gradient(
+    to right,
+    var(--bg) 50%,
+    var(--code-bg) 50%
+  );
+
   font-family: "Poppins", sans-serif;
   overflow: hidden;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* ===========================
@@ -25,14 +33,17 @@
   transition: all 0.4s ease;
 }
 
+/* Light panel */
 .dashboard-left {
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 4px 20px var(--shadow);
 }
 
+/* Dark panel */
 .dashboard-right {
-  background: #2f2f2f;
-  color: #fff;
+  background: var(--code-bg);
+  color: var(--text-h);
   border-radius: 0 12px 12px 0;
 }
 
@@ -42,29 +53,31 @@
 .dashboard-title {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: var(--text-h);
 }
 
 .dashboard-subtitle {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
+  color: var(--text);
 }
 
 .dashboard-text {
   margin-bottom: 1rem;
-  color: #555;
+  color: var(--text);
 }
 
 .dashboard-text span {
   font-weight: 700;
 }
 
+/* Score colors */
 .dashboard-text .high {
   color: #00ff7f;
 }
 
 .dashboard-text .medium {
-  color: #ffd700;
+  color: var(--accent);
 }
 
 .dashboard-text .low {
@@ -79,25 +92,30 @@
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Gold button */
 .dashboard-btn.gold {
-  background: #d4af37;
-  color: #fff;
+  background: var(--accent);
+  color: var(--bg);
+  border: 1px solid var(--accent-border);
 }
 
 .dashboard-btn.gold:hover {
-  background: #b8962e;
+  background: var(--accent-bg);
+  color: var(--text-h);
 }
 
+/* Dark button */
 .dashboard-btn.dark {
-  background: #444;
-  color: #fff;
+  background: var(--border);
+  color: var(--text-h);
 }
 
 .dashboard-btn.dark:hover {
-  background: #666;
+  background: var(--accent);
+  color: var(--bg);
 }
 
 /* ===========================
@@ -161,17 +179,19 @@
   animation-delay: 0.6s;
 }
 
-/* Admin section layout */
+/* ===========================
+   Admin section layout
+=========================== */
 .admin-section {
   margin-top: 25px;
   display: flex;
-  flex-direction: column; /* ✅ stack vertically */
-  gap: 10px; /* space between buttons */
-  align-items: flex-start; /* align to left */
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
 }
 
 .admin-section .dashboard-btn {
-  width: fit-content; /* keep buttons compact */
+  width: fit-content;
 }
 
 .admin-links {

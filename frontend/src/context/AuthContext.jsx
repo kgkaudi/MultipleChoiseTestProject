@@ -13,6 +13,46 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   /* ===========================
+     THEME (light / dark)
+  =========================== */
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "dark"
+  );
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
+  /* Apply theme to <body> */
+  useEffect(() => {
+    const root = document.documentElement;
+
+    if (theme === "dark") {
+      root.style.setProperty("--text", "#9ca3af");
+      root.style.setProperty("--text-h", "#f3f4f6");
+      root.style.setProperty("--bg", "#16171d");
+      root.style.setProperty("--border", "#2e303a");
+      root.style.setProperty("--code-bg", "#1f2028");
+      root.style.setProperty("--accent", "#c084fc");
+      root.style.setProperty("--accent-bg", "rgba(192, 132, 252, 0.15)");
+      root.style.setProperty("--accent-border", "rgba(192, 132, 252, 0.5)");
+      root.style.setProperty("--social-bg", "rgba(47, 48, 58, 0.5)");
+    } else {
+      root.style.setProperty("--text", "#6b6375");
+      root.style.setProperty("--text-h", "#08060d");
+      root.style.setProperty("--bg", "#fff");
+      root.style.setProperty("--border", "#e5e4e7");
+      root.style.setProperty("--code-bg", "#f4f3ec");
+      root.style.setProperty("--accent", "#aa3bff");
+      root.style.setProperty("--accent-bg", "rgba(170, 59, 255, 0.1)");
+      root.style.setProperty("--accent-border", "rgba(170, 59, 255, 0.5)");
+      root.style.setProperty("--social-bg", "rgba(244, 243, 236, 0.5)");
+    }
+
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  /* ===========================
      Persist token
   =========================== */
   useEffect(() => {
@@ -36,7 +76,6 @@ export function AuthProvider({ children }) {
 
   /* ===========================
      Refresh user from backend
-     (fixes stale canTakeQuiz)
   =========================== */
   const refreshUser = async () => {
     try {
@@ -49,9 +88,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  /* ===========================
-     Auto-refresh on mount
-  =========================== */
   useEffect(() => {
     refreshUser();
   }, []);
@@ -77,7 +113,11 @@ export function AuthProvider({ children }) {
         token,
         setToken,
         logout,
-        refreshUser
+        refreshUser,
+
+        // THEME
+        theme,
+        toggleTheme,
       }}
     >
       {children}

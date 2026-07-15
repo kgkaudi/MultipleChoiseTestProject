@@ -6,20 +6,22 @@
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  background-color: #0f0f0f;
+  background-color: var(--bg);
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* ===========================
    Card
 =========================== */
 .profile-card {
-  background-color: #1a1a1a;
-  color: #fff;
+  background-color: var(--code-bg);
+  color: var(--text);
   padding: 2rem;
   border-radius: 10px;
   width: 380px;
   text-align: center;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+  box-shadow: 0 0 10px var(--shadow);
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* ===========================
@@ -27,14 +29,14 @@
 =========================== */
 .profile-title {
   font-size: 1.8rem;
-  color: #ffd700;
+  color: var(--accent);
   margin-bottom: 1rem;
 }
 
 .profile-subtitle {
   margin-top: 2rem;
   margin-bottom: 1rem;
-  color: #ffd700;
+  color: var(--accent);
 }
 
 /* ===========================
@@ -48,7 +50,7 @@
   width: 100%;
 }
 
-/* ✅ Consistent width for all elements */
+/* Consistent width */
 .password-field,
 .profile-inputs input,
 .profile-inputs button {
@@ -65,11 +67,18 @@
 .profile-inputs input {
   width: 100%;
   padding: 0.6rem 2.5rem 0.6rem 0.6rem;
-  border: none;
+  border: 1px solid var(--border);
   border-radius: 4px;
-  background-color: #2a2a2a;
-  color: #fff;
+  background-color: var(--bg);
+  color: var(--text);
   box-sizing: border-box;
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.password-field input:focus,
+.profile-inputs input:focus {
+  border-color: var(--accent);
+  outline: none;
 }
 
 /* ===========================
@@ -81,7 +90,7 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #ffd700;
+  color: var(--accent);
   font-size: 0.9rem;
   user-select: none;
 }
@@ -93,18 +102,19 @@
   width: 100%;
   max-width: 320px;
   padding: 0.6rem;
-  background-color: #ffd700;
-  color: #000;
-  border: none;
+  background-color: var(--accent);
+  color: var(--bg);
+  border: 1px solid var(--accent-border);
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
   box-sizing: border-box;
 }
 
 .profile-inputs button:hover {
-  background-color: #e6c200;
+  background-color: var(--accent-bg);
+  color: var(--text-h);
 }
 
 /* ===========================
@@ -137,12 +147,14 @@
   box-sizing: border-box;
 }
 
+/* Error message */
 .profile-message.error {
   background-color: rgba(220, 53, 69, 0.15);
   color: #ff6b6b;
   border: 1px solid rgba(220, 53, 69, 0.4);
 }
 
+/* Success message */
 .profile-message.success {
   background-color: rgba(40, 167, 69, 0.15);
   color: #4dd67a;

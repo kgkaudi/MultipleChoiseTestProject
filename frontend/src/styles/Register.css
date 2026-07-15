@@ -1,29 +1,40 @@
+/* ===========================
+   Register Container
+=========================== */
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #fafafa;
+  background: var(--bg);
   font-family: "Poppins", sans-serif;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
+/* ===========================
+   Register Form
+=========================== */
 .register-form {
-  background: #fff;
+  background: var(--code-bg);
   padding: 3rem 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 25px var(--shadow);
   width: 350px;
   text-align: center;
   animation: slide-up 0.6s ease forwards;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 .register-title {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 2rem;
-  color: #222;
+  color: var(--text-h);
 }
 
+/* ===========================
+   Input Fields
+=========================== */
 .input-group {
   margin-bottom: 1.2rem;
 }
@@ -31,35 +42,62 @@
 .input-group input {
   width: 100%;
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border);
   padding: 0.8rem;
   font-size: 0.9rem;
   outline: none;
   background: transparent;
+  color: var(--text);
   transition: border-color 0.3s ease;
 }
 
 .input-group input:focus {
-  border-color: #d4af37;
+  border-color: var(--accent);
 }
 
+/* ===========================
+   Register Button
+=========================== */
 .register-btn {
   width: 100%;
   padding: 0.8rem;
-  background: #d4af37;
-  color: white;
+  background: var(--accent);
+  color: var(--bg);
   border: none;
   border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
+  border: 1px solid var(--accent-border);
 }
 
 .register-btn:hover {
-  background: #b8962e;
+  background: var(--accent-bg);
+  color: var(--text-h);
 }
 
-/* Animations */
+/* ===========================
+   Password Toggle
+=========================== */
+.password-group {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ===========================
+   Animations
+=========================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -76,17 +114,9 @@
   animation: fadeIn 0.6s ease forwards;
 }
 
-.delay-1 {
-  animation-delay: 0.2s;
-}
-
-.delay-2 {
-  animation-delay: 0.4s;
-}
-
-.delay-3 {
-  animation-delay: 0.6s;
-}
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
 
 @keyframes slide-up {
   from {
@@ -97,20 +127,4 @@
     transform: translateY(0);
     opacity: 1;
   }
-}
-
-.password-group {
-  position: relative;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #d4af37;
-  cursor: pointer;
-  font-weight: 600;
 }

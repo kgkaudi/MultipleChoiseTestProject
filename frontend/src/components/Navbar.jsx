@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, theme, toggleTheme } = useContext(AuthContext);
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -24,6 +24,14 @@ export default function Navbar() {
 
       {/* Desktop Links */}
       <div className="navbar-right desktop-only">
+        {/* Theme Toggle */}
+        <button
+          className="theme-toggle-btn"
+          onClick={toggleTheme}
+        >
+          {theme === "dark" ? "🌞 Light" : "🌙 Dark"}
+        </button>
+
         {!user && (
           <>
             <Link to="/login" className="nav-link">Login</Link>
@@ -35,10 +43,8 @@ export default function Navbar() {
           <>
             <span className="nav-user">Hello, {user.username}</span>
 
-                {/* Profile link */}
             <Link to="/profile" className="nav-link">Profile</Link>
 
-            {/* Admin-only links */}
             {user.role === "admin" && (
               <>
                 <Link to="/admin" className="nav-link">Admin</Link>
@@ -78,6 +84,17 @@ export default function Navbar() {
           ✕
         </button>
 
+        {/* Mobile Theme Toggle */}
+        <button
+          className="mobile-theme-toggle"
+          onClick={() => {
+            toggleTheme();
+            setMenuOpen(false);
+          }}
+        >
+          {theme === "dark" ? "🌞 Light Mode" : "🌙 Dark Mode"}
+        </button>
+
         {!user && (
           <>
             <Link to="/login" className="mobile-link" onClick={() => setMenuOpen(false)}>
@@ -93,7 +110,6 @@ export default function Navbar() {
           <>
             <span className="mobile-user">Hello, {user.username}</span>
 
-            {/* Profile link */}
             <Link
               to="/profile"
               className="mobile-link"
@@ -102,7 +118,6 @@ export default function Navbar() {
               Profile
             </Link>
 
-            {/* ✅ Admin-only mobile links */}
             {user.role === "admin" && (
               <>
                 <Link

@@ -1,25 +1,26 @@
 /* ===========================
    Results Container
-   =========================== */
+=========================== */
 .results-container {
-  background: #0b0b0b;
-  color: #ffd700;
+  background: var(--bg);
+  color: var(--text);
   padding: 40px 30px;
   max-width: 900px;
   margin: 40px auto;
   border-radius: 12px;
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 25px var(--accent-border);
   animation: fadeIn 0.4s ease-in-out;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* ===========================
    Title & Summary
-   =========================== */
+=========================== */
 .results-title {
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 20px;
-  color: #fff;
+  color: var(--text-h);
   letter-spacing: 1px;
 }
 
@@ -36,23 +37,23 @@
 
 .results-score span,
 .results-percentage span {
-  color: #00ff7f;
+  color: #00ff7f; /* success green stays */
   font-weight: 700;
 }
 
 /* ===========================
    Results List
-   =========================== */
+=========================== */
 .results-list {
   margin-top: 20px;
 }
 
 .result-item {
-  border: 1px solid #d4af37;
+  border: 1px solid var(--accent-border);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
-  background: #111;
+  background: var(--code-bg);
   transition: 0.3s ease;
 }
 
@@ -69,13 +70,14 @@
 .result-question {
   font-size: 1.3rem;
   margin-bottom: 12px;
-  color: #fff;
+  color: var(--text-h);
 }
 
 .result-answer,
 .result-correct-answer {
   margin: 6px 0;
   font-size: 1.1rem;
+  color: var(--text);
 }
 
 .answer-correct {
@@ -90,7 +92,7 @@
 
 /* ===========================
    Buttons
-   =========================== */
+=========================== */
 .results-buttons {
   display: flex;
   justify-content: center;
@@ -102,25 +104,25 @@
 .home-btn {
   padding: 12px 25px;
   background: transparent;
-  border: 2px solid #ffd700;
-  color: #ffd700;
+  border: 2px solid var(--accent);
+  color: var(--accent);
   font-size: 1.1rem;
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s ease;
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 8px var(--accent-border);
 }
 
 .retry-btn:hover,
 .home-btn:hover {
-  background: #ffd700;
-  color: #000;
+  background: var(--accent);
+  color: var(--bg);
   transform: translateY(-2px);
 }
 
 /* ===========================
    Fade-in Animation
-   =========================== */
+=========================== */
 @keyframes fadeIn {
   from {
     opacity: 0;
