@@ -186,20 +186,20 @@ describe("QUESTION API", () => {
     expect(res.status).toBe(404);
   });
 
-  // it("should update a question", async () => {
-  //   const res = await request(app)
-  //     .put(`/api/questions/${questionId}`)
-  //     .set("Authorization", `Bearer ${token}`)
-  //     .send({
-  //       question: "Updated?",
-  //       answers: ["Yes", "No", "Yes", "No"],
-  //       correctIndex: 0,
-  //       category: "general",
-  //       difficulty: "medium",
-  //     });
+  it("should update a question", async () => {
+    const res = await request(app)
+      .put(`/api/questions/${questionId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "Updated?",
+        answers: ["Yes", "No", "Yes", "No"],
+        correctIndex: 0,
+        category: "general",
+        difficulty: "medium",
+      });
 
-  //   expect(res.status).toBe(200);
-  // });
+    expect(res.status).toBe(200);
+  });
 
   it("should delete a question", async () => {
     const res = await request(app)

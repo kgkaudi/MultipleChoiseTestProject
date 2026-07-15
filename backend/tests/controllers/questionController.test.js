@@ -102,7 +102,7 @@ describe("Question Controller", () => {
           answers: ["a", "a", "b", "a"],
           correctIndex: 0,
           category: "test",
-          difficulty: "easy", // REQUIRED so controller reaches service
+          difficulty: "easy",
         },
       };
       const res = mockRes();

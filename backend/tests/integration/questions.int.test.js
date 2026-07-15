@@ -231,21 +231,21 @@ describe("QUESTION API", () => {
      UPDATE
   ============================ */
 
-  // it("should update a question", async () => {
-  //   const res = await request(app)
-  //     .put(`/api/questions/${questionId}`)
-  //     .set("Authorization", `Bearer ${token}`)
-  //     .send({
-  //       question: "Updated?",
-  //       answers: ["Yes", "No"],
-  //       correctIndex: 0,
-  //       category: "general",
-  //       difficulty: "medium"
-  //     });
+  it("should update a question", async () => {
+    const res = await request(app)
+      .put(`/api/questions/${questionId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "Updated?",
+        answers: ["Yes", "No"],
+        correctIndex: 0,
+        category: "general",
+        difficulty: "medium"
+      });
 
-  //   expect(res.status).toBe(200);
-  //   expect(res.body.difficulty).toBe("medium");
-  // });
+    expect(res.status).toBe(200);
+    expect(res.body.difficulty).toBe("medium");
+  });
 
   it("should reject invalid difficulty on update", async () => {
     const res = await request(app)

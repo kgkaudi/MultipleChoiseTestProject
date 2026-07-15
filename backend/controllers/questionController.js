@@ -163,7 +163,7 @@ exports.updateQuestion = async (req, res) => {
     if (question !== undefined) updateData.question = question;
     if (answers !== undefined) updateData.answers = normalizedAnswers;
     if (correctIndex !== undefined) updateData.correctIndex = req.body.correctIndex;
-    updateData.difficulty = difficulty; // always required
+    updateData.difficulty = difficulty;
     if (category !== undefined) updateData.category = category;
 
     const updated = await questionService.updateQuestion(id, updateData);

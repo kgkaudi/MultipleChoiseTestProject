@@ -269,21 +269,21 @@ describe("QUESTION ROUTES", () => {
     expect(res.status).toBe(400);
   });
 
-  // it("PUT /api/questions/:id should return 404 for unknown question", async () => {
-  //   const fakeId = new mongoose.Types.ObjectId();
-  //   const res = await request(app)
-  //     .put(`/api/questions/${fakeId}`)
-  //     .set("Authorization", `Bearer ${token}`)
-  //     .send({
-  //       question: "Doesn't exist",
-  //       answers: ["A", "B"],
-  //       correctIndex: 0,
-  //       category: "none",
-  //       difficulty: "easy"
-  //     });
+  it("PUT /api/questions/:id should return 404 for unknown question", async () => {
+    const fakeId = new mongoose.Types.ObjectId();
+    const res = await request(app)
+      .put(`/api/questions/${fakeId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "Doesn't exist",
+        answers: ["A", "B"],
+        correctIndex: 0,
+        category: "none",
+        difficulty: "easy"
+      });
 
-  //   expect(res.status).toBe(404);
-  // });
+    expect(res.status).toBe(404);
+  });
 
   /* ===========================
      DELETE
