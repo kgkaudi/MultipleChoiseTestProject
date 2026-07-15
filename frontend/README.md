@@ -1,10 +1,9 @@
-# 📘 **FRONTEND README.md (`frontend/README.md`)**
+---
 
-```md
 # Frontend – Multiple Choice Quiz (React + Vite)
 
-This is the frontend for the Multiple Choice Quiz platform.  
-Built with **React**, **Vite**, **Context API**, and custom animations.
+The frontend for the Multiple Choice Quiz Platform.  
+Built with **React**, **Vite**, **Context API**, custom animations, and a fully theme‑aware UI using CSS variables.
 
 ---
 
@@ -13,24 +12,26 @@ Built with **React**, **Vite**, **Context API**, and custom animations.
 ```
 frontend/
   src/
-    pages/
-    components/
-    context/
-    api/
-    styles/
+    pages/        # All user & admin pages
+    components/   # Reusable UI components
+    context/      # Auth + Theme context providers
+    api/          # Axios API layer
+    styles/       # Theme-aware CSS files
+    hooks/        # Custom hooks (optional)
 ```
 
 ---
 
-## 🎨 UI Features
+## 🎨 UI & UX Features
 
-- Animated dashboard
-- Admin dashboard
-- Manage users
-- Manage questions
-- Gold popup notifications
-- Responsive layout
-- Slide-in animations
+- Full **light/dark theme system** (CSS variables)
+- Smooth animations (fade, slide, stagger)
+- Responsive layout for all pages
+- Animated quiz interactions
+- Gold success popups
+- Mobile-friendly navbar + hamburger menu
+- Admin dashboard with tables & controls
+- Consistent design system across all pages
 
 ---
 
@@ -42,40 +43,69 @@ All API calls are handled through:
 src/api/api.js
 ```
 
-Uses Axios with:
-- Base URL
-- Token injection
-- Error handling
+Features:
+- Axios instance with base URL  
+- Automatic JWT injection  
+- Global error handling  
+- Protected routes
 
 ---
 
 ## 🔐 Authentication
 
-Stored in:
+Authentication logic lives in:
+
 ```
 src/context/AuthContext.jsx
 ```
 
-Features:
-- Login
-- Register
-- Auto-logout on token expiration
-- User role support
+Includes:
+- Login & Register  
+- JWT storage  
+- Auto-logout on expiration  
+- Role-based UI (admin/user)  
+- Theme persistence  
 
 ---
 
 ## 🧪 Pages
 
 ### User Pages
-- Dashboard
-- Quiz
-- Login
-- Register
+- Dashboard  
+- Quiz  
+- Results  
+- Login  
+- Register  
+- Profile  
 
 ### Admin Pages
-- Admin Dashboard
-- Manage Users
-- Manage Questions
+- Admin Dashboard  
+- Manage Users  
+- Manage Questions  
+- Quiz Size Control  
+
+---
+
+## 🎨 Theme System
+
+The entire frontend uses a **CSS variable theme engine** defined in:
+
+```
+src/index.css
+```
+
+Supports:
+- Light mode  
+- Dark mode  
+- Accent colors  
+- Code backgrounds  
+- Smooth transitions  
+
+Theme toggling is handled in:
+
+```
+src/context/ThemeContext.jsx
+```
 
 ---
 
@@ -100,7 +130,7 @@ VITE_API_URL=http://localhost:5000/api
 
 ---
 
-## 📦 Build for production
+## 📦 Build for Production
 
 ```
 npm run build
@@ -111,4 +141,5 @@ npm run build
 ## 📄 License
 
 MIT License
-```
+
+---

@@ -1,11 +1,15 @@
+---
+
 # Backend – Multiple Choice Quiz API
 
-This is the backend for the Multiple Choice Quiz platform.  
-Built with **Node.js**, **Express**, **MongoDB**, and a clean layered architecture:
+The backend powering the Multiple Choice Quiz Platform.  
+Built with **Node.js**, **Express**, **MongoDB (Mongoose)**, and a clean layered architecture:
 
 ```
 Controller → Service → Repository → Model
 ```
+
+Provides authentication, quiz logic, admin tools, migrations, and a fully modular API.
 
 ---
 
@@ -13,41 +17,49 @@ Controller → Service → Repository → Model
 
 ```
 backend/
-  controllers/
-  services/
-  repositories/
-  routes/
-  models/
-  utils/
+  controllers/     # HTTP request handlers
+  services/        # Business logic
+  repositories/    # Database operations
+  routes/          # API routing
+  models/          # Mongoose schemas
+  middleware/      # JWT auth, admin guard
+  migrations/      # Automatic seeding
+  utils/           # Helpers (hashing, tokens)
 ```
 
 ---
 
 ## 🔐 Authentication
 
-- JWT-based authentication
-- `/api/auth/register`
-- `/api/auth/login`
-- Token expires in **1 day**
-- Admin role supported
+- JWT‑based authentication  
+- Secure password hashing (bcrypt)  
+- Admin role support  
+- Token expiration: **24 hours**
+
+### Endpoints
+```
+POST /api/auth/register
+POST /api/auth/login
+```
 
 ---
 
 ## 🧱 Architecture Overview
 
-### Controllers
-Handle HTTP requests only.
+### **Controllers**
+Handle HTTP requests and responses only.
 
-### Services
+### **Services**
 Contain business logic:
-- Hashing passwords
-- Validating credentials
-- Updating scores
-- Locking quiz access
-- Setting quiz size
+- Registering users  
+- Validating credentials  
+- Updating scores  
+- Locking/unlocking quiz access  
+- Setting global quiz size  
+- Question CRUD logic  
 
-### Repositories
-Handle database operations:
+### **Repositories**
+Abstract database operations:
 - `findById`
 - `findAll`
 - `create`
@@ -55,23 +67,23 @@ Handle database operations:
 - `deleteById`
 - `updateMany`
 
-### Models
+### **Models**
 Mongoose schemas for:
-- User
-- Question
-- Migration
+- **User**  
+- **Question**  
+- **Migration** (tracks seeding status)
 
 ---
 
 ## 📌 API Endpoints
 
-### Auth
+### **Auth**
 ```
 POST /api/auth/register
 POST /api/auth/login
 ```
 
-### Users
+### **Users**
 ```
 GET    /api/users
 GET    /api/users/:id
@@ -83,7 +95,7 @@ PUT    /api/users/quiz-size
 DELETE /api/users/:id
 ```
 
-### Questions
+### **Questions**
 ```
 GET    /api/questions
 GET    /api/questions/:id
@@ -92,7 +104,7 @@ PUT    /api/questions/:id
 DELETE /api/questions/:id
 ```
 
-### Migration
+### **Migration**
 ```
 GET /api/migration/status
 ```
@@ -108,11 +120,11 @@ MultipleChoiceQuiz.postman_collection.json
 ```
 
 Includes:
-- Auth
-- Users
-- Questions
-- Admin tools
-- Migration
+- Auth  
+- Users  
+- Questions  
+- Admin tools  
+- Migration check  
 
 ---
 
@@ -123,12 +135,15 @@ Includes:
 npm install
 ```
 
-### Start server
+### Start development server
 ```
 npm run dev
 ```
 
-### Environment variables
+---
+
+## 🔧 Environment Variables
+
 Create `.env`:
 
 ```
@@ -137,16 +152,36 @@ JWT_SECRET=yourSecretKey
 PORT=5000
 ```
 
+Supports both **local MongoDB** and **MongoDB Atlas**.
+
 ---
 
 ## 🛡 Middleware
 
-- JWT authentication
-- Role-based admin protection (optional)
+- JWT authentication  
+- Role‑based admin protection  
+- Request validation (optional)
+
+---
+
+## 🧩 Migrations
+
+Automatic seeding includes:
+
+- Admin user  
+- Sample questions  
+- Migration status tracking  
+
+Check migration status:
+
+```
+GET /api/migration/status
+```
 
 ---
 
 ## 📄 License
 
 MIT License
-```
+
+---

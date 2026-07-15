@@ -1,36 +1,58 @@
+---
+
 # Multiple Choice Quiz Platform
 
-A full‑stack multiple‑choice quiz application built with:
+A full‑stack multiple‑choice quiz platform featuring dynamic quizzes, admin controls, JWT authentication, and a fully theme‑aware React frontend.
 
-- **Frontend:** React (Vite), Context API, Tailwind/DaisyUI (optional), custom animations  
-- **Backend:** Node.js, Express, MongoDB (Mongoose), JWT authentication  
-- **Architecture:** Controllers → Services → Repositories  
-- **Admin Tools:** Manage users, questions, quiz size, quiz access  
-- **Features:** Dynamic quiz size, score tracking, admin dashboard, migrations
+---
+
+## ✨ Overview
+
+This project is a complete quiz system built for real‑world use:
+
+- **React + Vite frontend** with Context API, custom animations, and full light/dark theme support  
+- **Node.js + Express backend** with modular architecture  
+- **MongoDB (Mongoose)** for persistent storage  
+- **Admin dashboard** for managing users, questions, quiz size, and access  
+- **Secure authentication** using JWT  
+- **Automatic quiz locking**, score tracking, and user progress history  
 
 ---
 
 ## 🚀 Features
 
 ### 👤 User Features
-- Register & login with JWT authentication
-- Take quizzes with dynamic question count
-- View last score & completion date
-- Quiz access locks automatically after completion
+- Register & login with JWT authentication  
+- Take quizzes with dynamic question count  
+- View last score, percentage, and completion date  
+- Quiz auto‑locks after completion  
+- Fully responsive UI with theme toggle (light/dark)
 
 ### 🛠 Admin Features
-- Manage questions (CRUD)
-- Manage users (CRUD)
-- Toggle quiz access per user
-- Set quiz size for all users
-- View migration status
+- Manage questions (create, update, delete)  
+- Manage users (CRUD + access control)  
+- Set global quiz size  
+- Lock/unlock quiz access per user  
+- View migration status & seeded data  
+- Admin‑only dashboard with tables, filters, and actions
+
+### 🎨 Frontend Features
+- React (Vite) + Context API  
+- Global theme system (CSS variables)  
+- Smooth animations (fade, slide, stagger)  
+- Responsive design for all pages  
+- Clean component structure  
+- Axios API layer  
+- Protected routes
 
 ### ⚙️ Backend Architecture
-- **Controllers:** Handle HTTP requests  
-- **Services:** Business logic  
-- **Repositories:** Database operations  
-- **Models:** Mongoose schemas  
-- **Routes:** Clean and declarative
+- **Controllers** — HTTP request handling  
+- **Services** — business logic  
+- **Repositories** — database operations  
+- **Models** — Mongoose schemas  
+- **Routes** — clean, modular routing  
+- **Middleware** — JWT auth, validation  
+- **Migrations** — automatic admin/user/question seeding  
 
 ---
 
@@ -44,7 +66,9 @@ project/
     repositories/
     routes/
     models/
+    middleware/
     utils/
+    migrations/
   frontend/
     src/
       pages/
@@ -52,37 +76,74 @@ project/
       context/
       styles/
       api/
+      hooks/
 ```
 
 ---
 
 ## 🧪 Postman Collection
 
-A full Postman collection is included:
+A complete Postman collection is included:
 
 ```
 MultipleChoiceQuiz.postman_collection.json
 ```
 
 Contains:
-- Auth endpoints
-- User endpoints
-- Question endpoints
-- Admin endpoints
-- Migration check
+- Auth endpoints  
+- User management  
+- Question CRUD  
+- Admin tools  
+- Migration checks  
+- Quiz endpoints  
 
 ---
 
 ## 🛠 Requirements
 
-- Node.js 18+
-- MongoDB (local or Atlas)
-- Vite
-- npm or yarn
+- Node.js 18+  
+- MongoDB (local or Atlas)  
+- Vite  
+- npm or yarn  
+
+---
+
+## ▶️ Running the Project
+
+### Backend
+```
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend
+```
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🔐 Environment Variables
+
+### Backend `.env`
+```
+MONGO_URI=
+JWT_SECRET=
+PORT=5000
+```
+
+### Frontend `.env`
+```
+VITE_API_URL=http://localhost:5000
+```
 
 ---
 
 ## 📄 License
 
 MIT License
-```
+
+---
