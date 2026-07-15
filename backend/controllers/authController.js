@@ -21,11 +21,15 @@ exports.register = async (req, res) => {
 };
 
 /* ===========================
-   LOGIN
+   LOGIN (email OR username)
 =========================== */
 exports.login = async (req, res) => {
   try {
-    const result = await authService.login(req.body);
+    // Expecting: { identifier, password }
+    const result = await authService.login({
+      identifier: req.body.identifier,
+      password: req.body.password
+    });
 
     if (result.error) {
       return res.status(400).json({ error: result.error });

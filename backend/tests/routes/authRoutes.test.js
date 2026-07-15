@@ -63,7 +63,7 @@ describe("AUTH ROUTES", () => {
      LOGIN
   ============================ */
 
-  it("POST /api/auth/login should login", async () => {
+  it("POST /api/auth/login should login with email", async () => {
     await request(app)
       .post("/api/auth/register")
       .send({
@@ -75,7 +75,27 @@ describe("AUTH ROUTES", () => {
     const res = await request(app)
       .post("/api/auth/login")
       .send({
-        email: "login@test.com",
+        identifier: "login@test.com",
+        password: "123456"
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.token).toBeDefined();
+  });
+
+  it("POST /api/auth/login should login with username", async () => {
+    await request(app)
+      .post("/api/auth/register")
+      .send({
+        username: "UserLogin",
+        email: "userlogin@test.com",
+        password: "123456"
+      });
+
+    const res = await request(app)
+      .post("/api/auth/login")
+      .send({
+        identifier: "UserLogin",
         password: "123456"
       });
 
@@ -95,18 +115,18 @@ describe("AUTH ROUTES", () => {
     const res = await request(app)
       .post("/api/auth/login")
       .send({
-        email: "wrongpass@test.com",
+        identifier: "wrongpass@test.com",
         password: "incorrectpass"
       });
 
     expect(res.status).toBe(400);
   });
 
-  it("POST /api/auth/login should fail if email does not exist", async () => {
+  it("POST /api/auth/login should fail if user does not exist", async () => {
     const res = await request(app)
       .post("/api/auth/login")
       .send({
-        email: "doesnotexist@test.com",
+        identifier: "doesnotexist@test.com",
         password: "123456"
       });
 
@@ -121,14 +141,15 @@ describe("AUTH ROUTES", () => {
     expect(res.status).toBe(400);
   });
 
-  it("POST /api/auth/login should fail on invalid email format", async () => {
+  it("POST /api/auth/login should fail on invalid email format (identifier looks like email)", async () => {
     const res = await request(app)
       .post("/api/auth/login")
       .send({
-        email: "not-an-email",
+        identifier: "not-an-email",
         password: "123456"
       });
 
+    // invalid email format only applies when identifier *looks* like email
     expect(res.status).toBe(400);
   });
 });

@@ -31,7 +31,7 @@ describe("User Repository", () => {
       const data = {
         username: "TestUser",
         email: "test@example.com",
-        password: "hashedpassword",
+        password: "validpass",
         role: "user",
         quizSize: 10,
         canTakeQuiz: true
@@ -57,24 +57,24 @@ describe("User Repository", () => {
   describe("findAll()", () => {
     it("should return all users", async () => {
       await userRepo.create({
-        username: "A",
+        username: "UserA",
         email: "a@test.com",
-        password: "pass",
+        password: "validpass",
         role: "user"
       });
 
       await userRepo.create({
-        username: "B",
+        username: "UserB",
         email: "b@test.com",
-        password: "pass",
+        password: "validpass",
         role: "admin"
       });
 
       const users = await userRepo.findAll();
 
       expect(users.length).toBe(2);
-      expect(users[0].username).toBe("A");
-      expect(users[1].username).toBe("B");
+      expect(users[0].username).toBe("UserA");
+      expect(users[1].username).toBe("UserB");
     });
 
     it("should return empty array when no users exist", async () => {
@@ -91,7 +91,7 @@ describe("User Repository", () => {
       const user = await userRepo.create({
         username: "FindMe",
         email: "find@test.com",
-        password: "pass",
+        password: "validpass",
         role: "user"
       });
 
@@ -117,30 +117,30 @@ describe("User Repository", () => {
   describe("updateById()", () => {
     it("should update a user successfully", async () => {
       const user = await userRepo.create({
-        username: "Old",
+        username: "OldUser",
         email: "old@test.com",
-        password: "pass",
+        password: "validpass",
         role: "user"
       });
 
       const updated = await userRepo.updateById(user._id, {
-        username: "Updated"
+        username: "UpdatedUser"
       });
 
-      expect(updated.username).toBe("Updated");
+      expect(updated.username).toBe("UpdatedUser");
     });
 
     it("should return null when updating non-existing ID", async () => {
       const updated = await userRepo.updateById(
         "000000000000000000000000",
-        { username: "Updated" }
+        { username: "UpdatedUser" }
       );
       expect(updated).toBeNull();
     });
 
     it("should throw for invalid ID format", async () => {
       await expect(
-        userRepo.updateById("invalid-id", { username: "Updated" })
+        userRepo.updateById("invalid-id", { username: "UpdatedUser" })
       ).rejects.toThrow();
     });
   });
@@ -153,7 +153,7 @@ describe("User Repository", () => {
       const user = await userRepo.create({
         username: "DeleteMe",
         email: "delete@test.com",
-        password: "pass",
+        password: "validpass",
         role: "user"
       });
 
@@ -184,17 +184,17 @@ describe("User Repository", () => {
   describe("updateMany()", () => {
     it("should update multiple users", async () => {
       await userRepo.create({
-        username: "A",
+        username: "UserA",
         email: "a@test.com",
-        password: "pass",
+        password: "validpass",
         role: "user",
         quizSize: 10
       });
 
       await userRepo.create({
-        username: "B",
+        username: "UserB",
         email: "b@test.com",
-        password: "pass",
+        password: "validpass",
         role: "user",
         quizSize: 10
       });
@@ -229,15 +229,15 @@ describe("User Repository", () => {
       const user = await userRepo.create({
         username: "SaveMe",
         email: "save@test.com",
-        password: "pass",
+        password: "validpass",
         role: "user"
       });
 
-      user.username = "Saved";
+      user.username = "SavedUser";
 
       const saved = await userRepo.save(user);
 
-      expect(saved.username).toBe("Saved");
+      expect(saved.username).toBe("SavedUser");
     });
 
     it("should throw if save fails", async () => {

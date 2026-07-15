@@ -6,12 +6,11 @@ import "../styles/Login.css";
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: "",
+    identifier: "", // 👈 supports email or username
     password: ""
   });
 
-  const [showPassword, setShowPassword] = useState(false); // 👈 new state
-
+  const [showPassword, setShowPassword] = useState(false);
   const { setUser, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -22,12 +21,12 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/auth/login", formData);
+      const res = await api.post("/auth/login", formData); // 👈 sends identifier + password
       setToken(res.data.token);
       setUser(res.data.user);
       navigate("/");
     } catch {
-      alert("Invalid email or password");
+      alert("Invalid email/username or password");
     }
   };
 
@@ -38,10 +37,10 @@ export default function Login() {
 
         <div className="input-group fade-in">
           <input
-            type="email"
-            name="email"
-            placeholder="EMAIL"
-            value={formData.email}
+            type="text"
+            name="identifier"
+            placeholder="EMAIL OR USERNAME"
+            value={formData.identifier}
             onChange={handleChange}
             required
           />
@@ -49,7 +48,7 @@ export default function Login() {
 
         <div className="input-group fade-in delay-1 password-group">
           <input
-            type={showPassword ? "text" : "password"} // 👈 toggle visibility
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="PASSWORD"
             value={formData.password}

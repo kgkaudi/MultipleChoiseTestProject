@@ -11,9 +11,12 @@ const mockRes = () => {
 };
 
 describe("Auth Controller", () => {
+  /* ===========================
+     REGISTER
+  ============================ */
   describe("register()", () => {
     it("should register a user successfully", async () => {
-      const req = { body: { username: "Test", email: "test@test.com", password: "123" } };
+      const req = { body: { username: "Test", email: "test@test.com", password: "123456" } };
       const res = mockRes();
 
       authService.register.mockResolvedValue({ user: { id: 1, username: "Test" } });
@@ -26,8 +29,8 @@ describe("Auth Controller", () => {
       });
     });
 
-    it("should return error if email exists", async () => {
-      const req = { body: { email: "test@test.com" } };
+    it("should return error if email already exists", async () => {
+      const req = { body: { username: "Test", email: "test@test.com", password: "123456" } };
       const res = mockRes();
 
       authService.register.mockResolvedValue({ error: "Email already exists" });
@@ -36,6 +39,30 @@ describe("Auth Controller", () => {
 
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({ error: "Email already exists" });
+    });
+
+    it("should return error if username already exists", async () => {
+      const req = { body: { username: "Test", email: "test@test.com", password: "123456" } };
+      const res = mockRes();
+
+      authService.register.mockResolvedValue({ error: "Username already exists" });
+
+      await authController.register(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "Username already exists" });
+    });
+
+    it("should return error for missing fields", async () => {
+      const req = { body: {} };
+      const res = mockRes();
+
+      authService.register.mockResolvedValue({ error: "Missing fields" });
+
+      await authController.register(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "Missing fields" });
     });
 
     it("should handle unexpected errors", async () => {
@@ -51,9 +78,12 @@ describe("Auth Controller", () => {
     });
   });
 
+  /* ===========================
+     LOGIN (email OR username)
+  ============================ */
   describe("login()", () => {
-    it("should login successfully", async () => {
-      const req = { body: { email: "test@test.com", password: "123" } };
+    it("should login successfully with email", async () => {
+      const req = { body: { identifier: "test@test.com", password: "123456" } };
       const res = mockRes();
 
       authService.login.mockResolvedValue({
@@ -69,8 +99,25 @@ describe("Auth Controller", () => {
       });
     });
 
+    it("should login successfully with username", async () => {
+      const req = { body: { identifier: "TestUser", password: "123456" } };
+      const res = mockRes();
+
+      authService.login.mockResolvedValue({
+        token: "xyz789",
+        user: { id: 2, username: "TestUser" }
+      });
+
+      await authController.login(req, res);
+
+      expect(res.json).toHaveBeenCalledWith({
+        token: "xyz789",
+        user: { id: 2, username: "TestUser" }
+      });
+    });
+
     it("should return error for invalid credentials", async () => {
-      const req = { body: { email: "wrong@test.com", password: "123" } };
+      const req = { body: { identifier: "wrong", password: "123456" } };
       const res = mockRes();
 
       authService.login.mockResolvedValue({ error: "Invalid credentials" });
@@ -79,6 +126,30 @@ describe("Auth Controller", () => {
 
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({ error: "Invalid credentials" });
+    });
+
+    it("should return error for missing identifier", async () => {
+      const req = { body: { password: "123456" } };
+      const res = mockRes();
+
+      authService.login.mockResolvedValue({ error: "Missing fields" });
+
+      await authController.login(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "Missing fields" });
+    });
+
+    it("should return error for missing password", async () => {
+      const req = { body: { identifier: "test@test.com" } };
+      const res = mockRes();
+
+      authService.login.mockResolvedValue({ error: "Missing fields" });
+
+      await authController.login(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "Missing fields" });
     });
 
     it("should handle unexpected errors", async () => {

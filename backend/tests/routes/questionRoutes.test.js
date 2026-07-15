@@ -18,7 +18,7 @@ describe("QUESTION ROUTES", () => {
     const login = await request(app)
       .post("/api/auth/login")
       .send({
-        email: "q@test.com",
+        identifier: "q@test.com",
         password: "123456"
       });
 
@@ -60,7 +60,7 @@ describe("QUESTION ROUTES", () => {
       .send({
         question: "Bad index?",
         answers: ["A", "B"],
-        correctIndex: 5, // invalid
+        correctIndex: 5,
         category: "general"
       });
 

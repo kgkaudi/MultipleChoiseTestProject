@@ -7,6 +7,7 @@ beforeAll(async () => {
   await db.connect();
   app = require("../../app");
 
+  // Register
   await request(app)
     .post("/api/auth/register")
     .send({
@@ -15,10 +16,11 @@ beforeAll(async () => {
       password: "123456"
     });
 
+  // Login (FIXED: identifier instead of email)
   const login = await request(app)
     .post("/api/auth/login")
     .send({
-      email: "tester@test.com",
+      identifier: "tester@test.com",
       password: "123456"
     });
 
@@ -31,6 +33,10 @@ afterAll(async () => {
 
 describe("QUESTION API", () => {
   let questionId;
+
+  /* ===========================
+     CREATE
+  ============================ */
 
   it("should create a question", async () => {
     const res = await request(app)
@@ -56,6 +62,107 @@ describe("QUESTION API", () => {
     expect(res.status).toBe(400);
   });
 
+  it("should reject empty question text", async () => {
+    const res = await request(app)
+      .post("/api/questions")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "",
+        answers: ["A", "B"],
+        correctIndex: 0,
+        category: "general"
+      });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should reject non-array answers", async () => {
+    const res = await request(app)
+      .post("/api/questions")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "Bad answers",
+        answers: "not-an-array",
+        correctIndex: 0,
+        category: "general"
+      });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should reject empty answers array", async () => {
+    const res = await request(app)
+      .post("/api/questions")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "Bad answers",
+        answers: [],
+        correctIndex: 0,
+        category: "general"
+      });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should reject negative correctIndex", async () => {
+    const res = await request(app)
+      .post("/api/questions")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "Bad index",
+        answers: ["A", "B"],
+        correctIndex: -1,
+        category: "general"
+      });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should reject correctIndex out of range", async () => {
+    const res = await request(app)
+      .post("/api/questions")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        question: "Bad index",
+        answers: ["A", "B"],
+        correctIndex: 5,
+        category: "general"
+      });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should reject missing token", async () => {
+    const res = await request(app)
+      .post("/api/questions")
+      .send({
+        question: "Unauthorized",
+        answers: ["A", "B"],
+        correctIndex: 0,
+        category: "general"
+      });
+
+    expect(res.status).toBe(401);
+  });
+
+  it("should reject invalid token", async () => {
+    const res = await request(app)
+      .post("/api/questions")
+      .set("Authorization", "Bearer invalidtoken123")
+      .send({
+        question: "Unauthorized",
+        answers: ["A", "B"],
+        correctIndex: 0,
+        category: "general"
+      });
+
+    expect(res.status).toBe(401);
+  });
+
+  /* ===========================
+     GET LIST
+  ============================ */
+
   it("should get all questions", async () => {
     const res = await request(app)
       .get("/api/questions")
@@ -64,6 +171,15 @@ describe("QUESTION API", () => {
     expect(res.status).toBe(200);
     expect(res.body.length).toBeGreaterThan(0);
   });
+
+  it("should fail without token", async () => {
+    const res = await request(app).get("/api/questions");
+    expect(res.status).toBe(401);
+  });
+
+  /* ===========================
+     GET BY ID
+  ============================ */
 
   it("should get question by ID", async () => {
     const res = await request(app)
@@ -84,11 +200,15 @@ describe("QUESTION API", () => {
 
   it("should reject invalid ObjectId", async () => {
     const res = await request(app)
-      .get(`/api/questions/123`)
+      .get(`/api/questions/invalid-id`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.status).toBe(404);
   });
+
+  /* ===========================
+     UPDATE
+  ============================ */
 
   it("should update a question", async () => {
     const res = await request(app)
@@ -118,6 +238,10 @@ describe("QUESTION API", () => {
 
     expect(res.status).toBe(404);
   });
+
+  /* ===========================
+     DELETE
+  ============================ */
 
   it("should delete a question", async () => {
     const res = await request(app)

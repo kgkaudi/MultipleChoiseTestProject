@@ -18,7 +18,7 @@ describe("USER ROUTES", () => {
     const login = await request(app)
       .post("/api/auth/login")
       .send({
-        email: "routeuser@test.com",
+        identifier: "routeuser@test.com",
         password: "123456"
       });
 
@@ -59,7 +59,7 @@ describe("USER ROUTES", () => {
       .get("/api/users/invalid-id")
       .set("Authorization", `Bearer ${token}`);
 
-    expect(res.status).toBe(404); // backend returns 404 for invalid ID
+    expect(res.status).toBe(404);
   });
 
   it("GET /api/users/:id should return 404 for unknown user", async () => {

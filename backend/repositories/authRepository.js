@@ -1,11 +1,28 @@
 const User = require("../models/User");
 
+/* ===========================
+   FIND BY EMAIL
+=========================== */
 exports.findByEmail = (email) => {
-  const User = require("../models/User");
-  return User.findOne({ email });
+  if (!email || typeof email !== "string") return null;
+  return User.findOne({ email: email.toLowerCase() });
 };
 
+/* ===========================
+   FIND BY USERNAME
+=========================== */
+exports.findByUsername = (username) => {
+  return User.findOne({ username });
+};
+
+/* ===========================
+   CREATE USER
+=========================== */
 exports.createUser = (data) => {
-  const User = require("../models/User");
+  // Normalize email before saving
+  if (data.email) {
+    data.email = data.email.toLowerCase();
+  }
+
   return User.create(data);
 };
