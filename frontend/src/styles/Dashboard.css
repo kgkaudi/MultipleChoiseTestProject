@@ -4,16 +4,9 @@
 .dashboard-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-
-  /* Theme-aware split background */
-  background: linear-gradient(
-    to right,
-    var(--bg) 50%,
-    var(--code-bg) 50%
-  );
-
+  align-items: stretch; /* ensures both columns fill full height */
+  min-height: 100vh; /* full viewport height */
+  background: linear-gradient(to right, var(--bg) 50%, var(--code-bg) 50%);
   font-family: "Poppins", sans-serif;
   overflow: hidden;
   transition: background 0.25s ease, color 0.25s ease;
@@ -25,7 +18,7 @@
 .dashboard-left,
 .dashboard-right {
   width: 50%;
-  height: 80vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,14 +26,12 @@
   transition: all 0.4s ease;
 }
 
-/* Light panel */
 .dashboard-left {
   background: var(--bg);
   color: var(--text);
   box-shadow: 0 4px 20px var(--shadow);
 }
 
-/* Dark panel */
 .dashboard-right {
   background: var(--code-bg);
   color: var(--text-h);
@@ -52,6 +43,7 @@
 =========================== */
 .dashboard-title {
   font-size: 2rem;
+  margin-top: 2rem; /* space from top */
   margin-bottom: 1rem;
   color: var(--text-h);
 }
@@ -72,17 +64,9 @@
 }
 
 /* Score colors */
-.dashboard-text .high {
-  color: #00ff7f;
-}
-
-.dashboard-text .medium {
-  color: var(--accent);
-}
-
-.dashboard-text .low {
-  color: #ff4d4d;
-}
+.dashboard-text .high { color: #00ff7f; }
+.dashboard-text .medium { color: var(--accent); }
+.dashboard-text .low { color: #ff4d4d; }
 
 /* ===========================
    Buttons
@@ -95,7 +79,6 @@
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Gold button */
 .dashboard-btn.gold {
   background: var(--accent);
   color: var(--bg);
@@ -107,7 +90,6 @@
   color: var(--text-h);
 }
 
-/* Dark button */
 .dashboard-btn.dark {
   background: var(--border);
   color: var(--text-h);
@@ -122,44 +104,21 @@
    Animations
 =========================== */
 @keyframes slideLeft {
-  from {
-    transform: translateX(-60px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(-60px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes slideRight {
-  from {
-    transform: translateX(60px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(60px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
 }
 
-.slide-in-left {
-  animation: slideLeft 0.8s ease forwards;
-}
-
-.slide-in-right {
-  animation: slideRight 0.8s ease forwards;
-}
+.slide-in-left { animation: slideLeft 0.8s ease forwards; }
+.slide-in-right { animation: slideRight 0.8s ease forwards; }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .fade-in {
@@ -167,35 +126,50 @@
   animation: fadeIn 0.6s ease forwards;
 }
 
-.delay-1 {
-  animation-delay: 0.2s;
-}
-
-.delay-2 {
-  animation-delay: 0.4s;
-}
-
-.delay-3 {
-  animation-delay: 0.6s;
-}
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
 
 /* ===========================
-   Admin section layout
+   Admin Section
 =========================== */
 .admin-section {
-  margin-top: 25px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-.admin-section .dashboard-btn {
-  width: fit-content;
+  justify-content: center;   /* vertical centering */
+  align-items: center;       /* horizontal centering */
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
 .admin-links {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.admin-section .dashboard-btn {
+  width: fit-content;
+  min-width: 160px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* ===========================
+   Responsive Buttons (Mobile)
+=========================== */
+@media (max-width: 768px) {
+  .admin-section .dashboard-btn {
+    width: 80%;              /* smaller width for mobile */
+    min-width: unset;
+    margin: 0 auto 10px 10px; /* margin from left and center */
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .admin-links { gap: 8px; }
+
+  .dashboard-title { margin-top: 1.5rem; }
 }
