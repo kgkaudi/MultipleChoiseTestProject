@@ -17,21 +17,25 @@ frontend/
     context/      # Auth + Theme context providers
     api/          # Axios API layer
     styles/       # Theme-aware CSS files
-    hooks/        # Custom hooks (optional)
+    hooks/        # Custom hooks
 ```
+
+Explore the folder structure.
 
 ---
 
 ## 🎨 UI & UX Features
 
-- Full **light/dark theme system** (CSS variables)
-- Smooth animations (fade, slide, stagger)
-- Responsive layout for all pages
-- Animated quiz interactions
-- Gold success popups
-- Mobile-friendly navbar + hamburger menu
-- Admin dashboard with tables & controls
-- Consistent design system across all pages
+- Full **light/dark theme system** (CSS variables)  
+- Smooth animations (fade, slide, stagger)  
+- Responsive layout for all pages  
+- Animated quiz interactions  
+- Gold success popups  
+- Mobile-friendly navbar + hamburger menu  
+- Admin dashboard with tables & controls  
+- Consistent design system across all pages  
+
+Learn more about the theme system.
 
 ---
 
@@ -47,7 +51,11 @@ Features:
 - Axios instance with base URL  
 - Automatic JWT injection  
 - Global error handling  
-- Protected routes
+- Protected routes  
+- Support for backend’s **identifier-based login**  
+- Automatic quiz locking and score updates  
+
+Explore the API layer.
 
 ---
 
@@ -60,11 +68,14 @@ src/context/AuthContext.jsx
 ```
 
 Includes:
-- Login & Register  
-- JWT storage  
+- Login using **identifier** (email or username)  
+- Register  
+- JWT storage in localStorage  
 - Auto-logout on expiration  
 - Role-based UI (admin/user)  
 - Theme persistence  
+
+Learn more about AuthContext.
 
 ---
 
@@ -83,6 +94,8 @@ Includes:
 - Manage Users  
 - Manage Questions  
 - Quiz Size Control  
+
+Explore the page system.
 
 ---
 
@@ -106,6 +119,8 @@ Theme toggling is handled in:
 ```
 src/context/ThemeContext.jsx
 ```
+
+Learn more about ThemeContext.
 
 ---
 

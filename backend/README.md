@@ -25,6 +25,7 @@ backend/
   middleware/      # JWT auth, admin guard
   migrations/      # Automatic seeding
   utils/           # Helpers (hashing, tokens)
+  tests/           # Jest unit + integration tests
 ```
 
 ---
@@ -34,13 +35,24 @@ backend/
 - JWT‑based authentication  
 - Secure password hashing (bcrypt)  
 - Admin role support  
-- Token expiration: **24 hours**
+- Token expiration: **24 hours**  
+- Login uses **identifier** (email or username)
 
 ### Endpoints
 ```
 POST /api/auth/register
 POST /api/auth/login
 ```
+
+### Login Body
+```json
+{
+  "identifier": "email-or-username",
+  "password": "yourPassword"
+}
+```
+
+Explore more about authentication flow.
 
 ---
 
@@ -57,6 +69,7 @@ Contain business logic:
 - Locking/unlocking quiz access  
 - Setting global quiz size  
 - Question CRUD logic  
+- Passing update options (`runValidators`, `context: "query"`)  
 
 ### **Repositories**
 Abstract database operations:
@@ -70,7 +83,7 @@ Abstract database operations:
 ### **Models**
 Mongoose schemas for:
 - **User**  
-- **Question**  
+- **Question** (answers normalized to 4, difficulty required)  
 - **Migration** (tracks seeding status)
 
 ---
@@ -87,7 +100,6 @@ POST /api/auth/login
 ```
 GET    /api/users
 GET    /api/users/:id
-POST   /api/users
 PUT    /api/users/:id
 PUT    /api/users/:id/score
 PUT    /api/users/:id/toggle-quiz
@@ -109,6 +121,29 @@ DELETE /api/questions/:id
 GET /api/migration/status
 ```
 
+Explore question validation rules.
+
+---
+
+## 🧪 Testing
+
+The backend includes a complete Jest test suite:
+
+- Controllers  
+- Services  
+- Repositories  
+- Middleware  
+- Routes  
+- Integration tests  
+
+All tests run with:
+
+```
+npm test
+```
+
+Learn more about backend testing strategy.
+
 ---
 
 ## 🧪 Postman Collection
@@ -120,11 +155,13 @@ MultipleChoiceQuiz.postman_collection.json
 ```
 
 Includes:
-- Auth  
+- Auth (identifier login)  
 - Users  
-- Questions  
+- Questions (difficulty required, answers normalized)  
 - Admin tools  
 - Migration check  
+
+Explore Postman usage.
 
 ---
 
@@ -160,7 +197,10 @@ Supports both **local MongoDB** and **MongoDB Atlas**.
 
 - JWT authentication  
 - Role‑based admin protection  
-- Request validation (optional)
+- Request validation  
+- Error handling  
+
+Explore middleware flow.
 
 ---
 
@@ -177,6 +217,8 @@ Check migration status:
 ```
 GET /api/migration/status
 ```
+
+Explore migration system.
 
 ---
 
