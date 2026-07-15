@@ -213,19 +213,6 @@
 }
 
 /* ===========================
-   Responsive
-=========================== */
-@media (max-width: 768px) {
-  .desktop-only {
-    display: none;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-}
-
-/* ===========================
    Theme Toggle Buttons
 =========================== */
 .theme-toggle-btn {
@@ -260,4 +247,111 @@
 .mobile-theme-toggle:hover {
   background: var(--accent);
   color: var(--bg);
+}
+
+/* ===========================
+   Dropdown Menu (Desktop)
+=========================== */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: color 0.25s ease;
+}
+
+.dropbtn:hover {
+  color: var(--text-h);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--code-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  min-width: 160px;
+  z-index: 1000;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.dropdown-content a {
+  color: var(--text);
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.dropdown-content a:hover {
+  background: var(--accent-bg);
+  color: var(--text-h);
+}
+
+/* Fade-in dropdown */
+.dropdown:hover .dropdown-content {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===========================
+   Responsive (Mobile)
+=========================== */
+@media (max-width: 768px) {
+  .desktop-only { display: none; }
+  .hamburger { display: flex; }
+
+  .dropdown-content {
+    position: static;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    opacity: 1;
+    transform: none;
+  }
+
+  .dropbtn { display: none; }
+  .dropdown-content a { padding: 8px 12px; }
+}
+
+/* ===========================
+   Admin Submenu (Mobile)
+=========================== */
+.admin-submenu {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px; /* indentation for hierarchy */
+  border-left: 2px solid var(--accent-border);
+  padding-left: 12px;
+  gap: 6px;
+}
+
+.admin-main {
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.admin-sub {
+  font-weight: 500;
+  font-size: 1.05rem;
+  opacity: 0.9;
+}
+
+.admin-sub:hover {
+  color: var(--text-h);
+  opacity: 1;
 }

@@ -46,11 +46,15 @@ export default function Navbar() {
             <Link to="/profile" className="nav-link">Profile</Link>
 
             {user.role === "admin" && (
-              <>
-                <Link to="/admin" className="nav-link">Admin</Link>
-                <Link to="/admin/users" className="nav-link">Users</Link>
-                <Link to="/admin/questions" className="nav-link">Questions</Link>
-              </>
+              <div className="dropdown">
+                <button className="dropbtn">Admin ▾</button>
+
+                <div className="dropdown-content">
+                  <Link to="/admin" className="nav-link">Dashboard</Link>
+                  <Link to="/admin/users" className="nav-link">Users</Link>
+                  <Link to="/admin/questions" className="nav-link">Questions</Link>
+                </div>
+              </div>
             )}
 
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
@@ -122,27 +126,29 @@ export default function Navbar() {
               <>
                 <Link
                   to="/admin"
-                  className="mobile-link"
+                  className="mobile-link admin-main"
                   onClick={() => setMenuOpen(false)}
                 >
                   Admin Dashboard
                 </Link>
 
-                <Link
-                  to="/admin/users"
-                  className="mobile-link"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Manage Users
-                </Link>
+                <div className="admin-submenu">
+                  <Link
+                    to="/admin/users"
+                    className="mobile-link admin-sub"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Manage Users
+                  </Link>
 
-                <Link
-                  to="/admin/questions"
-                  className="mobile-link"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Manage Questions
-                </Link>
+                  <Link
+                    to="/admin/questions"
+                    className="mobile-link admin-sub"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Manage Questions
+                  </Link>
+                </div>
               </>
             )}
 
